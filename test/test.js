@@ -1,5 +1,9 @@
 var assert = require('assert');
 
+beforeEach(function() {
+  //console.log('beforeEach');
+})
+
 describe('Array', function() {
   describe('#indexOf()', function () {
     it('should return -1 when the value is not present', function () {
@@ -13,7 +17,23 @@ describe('Array', function() {
     })
   });
 
-  describe('#indexOf', function() {
-
-  })
 });
+
+describe('String', function() {
+  describe('length', function() {
+    it('should return 0 for empty string', function() {
+      assert.equal(0, ''.length);
+    })
+  })
+
+  describe('toString', function() {
+    it('should be identical to itself', function() {
+      var s = "hello world";
+      assert(s === s.toString());
+    })
+  })
+
+  describe('someFunction', function() {
+    it('is not yet implemented');
+  })
+})
