@@ -20,6 +20,13 @@ describe('module', function () {
     });
 });
 
+describe('molarmass', function () {
+    it('should return 0 on empty string', function() {
+        var mass = molarmass('');
+        assert.equal(0, mass);
+    });
+});
+
 describe('Array', function () {
     describe('#indexOf()', function () {
         it('should return -1 when the value is not present', function () {
