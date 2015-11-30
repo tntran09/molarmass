@@ -23,39 +23,25 @@ describe('module', function () {
 describe('molarmass', function () {
     it('should return 0 on empty string', function() {
         var mass = molarmass('');
-        assert.equal(0, mass);
+        assert.strictEqual(0, mass);
     });
 });
 
-describe('Array', function () {
-    describe('#indexOf()', function () {
-        it('should return -1 when the value is not present', function () {
-            assert.equal(-1, [1, 2, 3].indexOf(5));
-            assert.equal(-1, [1, 2, 3].indexOf(0));
-        });
+describe('periodic table', function () {
+    var table = require('../table');
 
-        it('should return the index of a value', function () {
-            assert.equal(2, [1, 2, 3].indexOf(3));
-            assert.equal(0, [1, 2, 3].indexOf(1));
-        });
+    it('should be required without errors', function () {
+        assert(true);
     });
-});
 
-describe('String', function () {
-    describe('length', function () {
-        it('should return 0 for empty string', function () {
-            assert.equal(0, ''.length);
+    describe('#size', function () {
+        it('should be 109 after the table is loaded', function () {
+            assert.equal(109, table.size);
         });
     });
 
-    describe('toString', function () {
-        it('should be identical to itself', function () {
-            var s = "hello world";
-            assert(s === s.toString());
-        });
-    });
-
-    describe('someFunction', function () {
-        it('is not yet implemented');
+    describe('#get', function () {
+      it('should have Hydrogen as the first element');
+      it('should have Gold as the 79th element');
     });
 });

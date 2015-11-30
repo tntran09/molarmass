@@ -4,13 +4,16 @@
   "description": "Calculate the molar mass of a compound",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --harmony"
   },
   "keywords": [
     "chemistry",
     "molar mass",
     "mass"
   ],
-  "author": "Toan Tran",
+  "author": {
+    "name": "Toan Tran",
+    "email": ""
+  },
   "license": "ISC"
 }
