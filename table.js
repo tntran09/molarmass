@@ -1,6 +1,6 @@
 'use strict';
 
-let fs = require('fs');
+var fs = require('fs');
 
 function PeriodicTable() {
     var map = new Map();
@@ -16,9 +16,9 @@ function PeriodicTable() {
                 var symbol = arr[1];
 
                 map.set(symbol, {
-                    atomicNumber: arr[2],
-                    symbol: arr[1],
                     name: arr[0],
+                    symbol: arr[1],
+                    atomicNumber: arr[2],
                     mass: arr[3]
                 });
             }
@@ -26,8 +26,8 @@ function PeriodicTable() {
     });
 
     this.get = function (symbol) {
-        return map[symbol];
-    }
+        return map.get(symbol);
+    };
 
     Object.defineProperty(this, 'size', {
         get: function () {
