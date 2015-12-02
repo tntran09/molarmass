@@ -9,14 +9,12 @@ describe('canary', function () {
     });
 });
 
-describe('module', function () {
+describe('molarmass', function () {
     it('should be a function', function () {
         molarmass();
         assert(typeof molarmass === 'function');
     });
-});
 
-describe('molarmass', function () {
     it('should return 0 on empty string', function () {
         var mass = molarmass('');
         assert.strictEqual(0, mass);
@@ -54,5 +52,21 @@ describe('periodic table', function () {
         assert.equal(Au.atomicNumber, '79');
         assert.equal(Au.mass, 196.97);
       });
+    });
+});
+
+describe('compound', function () {
+    var Compound = require('../compound');
+
+    describe('module', function () {
+        it('should be required without errors', function () {
+            assert(true);
+        });
+    });
+
+    describe('#constructor', function () {
+        it('should be instantiated without errors', function () {
+            var c = new Compound();
+        });
     });
 });

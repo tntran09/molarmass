@@ -30,9 +30,9 @@ function PeriodicTable() {
     };
 
     Object.defineProperty(this, 'size', {
-        get: function () {
-            return map.size;
-        }
+        get: function () { return map.size; },
+        enumerable: false,
+        configurable: false
     });
 }
 

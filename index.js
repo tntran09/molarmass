@@ -1,12 +1,12 @@
 'use strict';
 
 // Load Periodic Table
-var table = require('./table');
+var Compound = require('./compound');
 
-module.exports = function () {
-    var mass = 0.0;
-    return mass;
+module.exports = function (formula) {
+    var c = new Compound(formula);
+    return c.mass;
 };
 // Usage
 // molarmass('H2O') = 18.0158;
-// molarmass('C2H4O2')
+// molarmass('C2H4O2') = 60.0536
