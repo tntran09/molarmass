@@ -68,5 +68,35 @@ describe('compound', function () {
         it('should be instantiated without errors', function () {
             var c = new Compound();
         });
+
+        it('should have some default values', function () {
+            var c = new Compound();
+
+            assert.equal('', c.formula);
+            assert.equal(0.0, c.molarMass);
+            assert.equal(1, c.quantity);
+            assert.deepEqual([], c.elements);
+            assert.equal(0.0, c.mass);
+        });
+
+        it('should have readonly properties', function () {
+            var c = new Compound();
+
+            assert.throws(
+                function () {
+                    c.formula = 'something else';
+                    c.molarMass = -100;
+                    c.quantity = 5;
+                    c.elements.push('some', 'new', 'elements');
+                    c.mass += 300;
+                },
+                /^TypeError: Cannot assign to read only property .*$/
+            );
+            assert.equal('', c.formula);
+            assert.equal(0.0, c.molarMass);
+            assert.equal(1, c.quantity);
+            assert.deepEqual([], c.elements);
+            assert.equal(0.0, c.mass);
+        });
     });
 });
