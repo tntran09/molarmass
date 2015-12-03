@@ -78,24 +78,78 @@ describe('compound', function () {
             assert.deepEqual([], c.elements);
             assert.equal(0.0, c.mass);
         });
+    });
 
-        it('should have readonly properties', function () {
+    describe('@formula', function () {
+        it('should be readonly', function () {
             var c = new Compound();
 
-            assert.throws(
-                function () {
+            assert.throws(function () {
                     c.formula = 'something else';
+                },
+                /^TypeError: Cannot assign to read only property .*$/
+            );
+
+            assert.equal('', c.formula);
+        });
+    });
+
+    describe('@molarMass', function () {
+        it('should be readonly', function () {
+            var c = new Compound();
+
+            assert.throws(function () {
                     c.molarMass = -100;
+                },
+                /^TypeError: Cannot assign to read only property .*$/
+            );
+
+            assert.equal(0.0, c.molarMass);
+        });
+    });
+
+    describe('@quantity', function () {
+        it('should be readonly', function () {
+            var c = new Compound();
+
+            assert.throws(function () {
                     c.quantity = 5;
-                    c.elements.push('some', 'new', 'elements');
+                },
+                /^TypeError: Cannot assign to read only property .*$/
+            );
+
+            assert.equal(1, c.quantity);
+        });
+    });
+
+    describe('@elements', function () {
+        it('should be readonly', function () {
+            var c = new Compound();
+
+            assert.throws(function () {
+                    c.elements = ['some', 'new', 'elements'];
+                },
+                /^TypeError: Cannot set property .* which has only a getter$/
+            );
+
+            assert.doesNotThrow(function () {
+                c.elements.push('some', 'new', 'elements');
+            });
+
+            assert.deepEqual([], c.elements);
+        });
+    });
+
+    describe('@mass', function () {
+        it('should be readonly', function () {
+            var c = new Compound();
+
+            assert.throws(function () {
                     c.mass += 300;
                 },
                 /^TypeError: Cannot assign to read only property .*$/
             );
-            assert.equal('', c.formula);
-            assert.equal(0.0, c.molarMass);
-            assert.equal(1, c.quantity);
-            assert.deepEqual([], c.elements);
+
             assert.equal(0.0, c.mass);
         });
     });
