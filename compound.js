@@ -2,10 +2,9 @@
 
 var table = require('./table');
 
-function Compound(f, q) {
+function Compound(f) {
     var formula = f || '',
         molarMass = 0.0,
-        quantity = q || 1,
         elements = [];
 
     validatePattern(formula);
@@ -27,21 +26,9 @@ function Compound(f, q) {
           enumerable: true,
           configurable: false
         },
-        'quantity': {
-          value: quantity,
-          writable: false,
-          enumerable: true,
-          configurable: false
-        },
         'elements': {
           get: function () { return elements.slice(); },
           enumerable: true,
-          configurable: false
-        },
-        'mass': {
-          value: (molarMass * quantity),
-          writable: false,
-          enumerable: false,
           configurable: false
         }
     });

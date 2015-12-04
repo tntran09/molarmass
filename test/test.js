@@ -74,9 +74,7 @@ describe('compound', function () {
 
             assert.equal('', c.formula);
             assert.equal(0.0, c.molarMass);
-            assert.equal(1, c.quantity);
             assert.deepEqual([], c.elements);
-            assert.equal(0.0, c.mass);
         });
     });
 
@@ -107,19 +105,6 @@ describe('compound', function () {
         });
     });
 
-    describe('@quantity', function () {
-        it('should be readonly', function () {
-            var c = new Compound();
-
-            assert.throws(
-                function () { c.quantity = 5; },
-                /^TypeError: Cannot assign to read only property .*$/
-            );
-
-            assert.equal(1, c.quantity);
-        });
-    });
-
     describe('@elements', function () {
         it('should be readonly', function () {
             var c = new Compound();
@@ -134,19 +119,6 @@ describe('compound', function () {
             });
 
             assert.deepEqual([], c.elements);
-        });
-    });
-
-    describe('@mass', function () {
-        it('should be readonly', function () {
-            var c = new Compound();
-
-            assert.throws(
-                function () { c.mass += 300; },
-                /^TypeError: Cannot assign to read only property .*$/
-            );
-
-            assert.equal(0.0, c.mass);
         });
     });
 });
