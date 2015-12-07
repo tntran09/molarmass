@@ -59,10 +59,101 @@ describe('compound', function () {
             var O = table.get('O');
 
             assert.deepEqual(H, H2O.elements[0].element);
-            assert.deepEqual(O, H2O.elements[1].element);
             assert.equal(2, H2O.elements[0].quantity);
+
+            assert.deepEqual(O, H2O.elements[1].element);
             assert.equal(1, H2O.elements[1].quantity);
+
             assert.equal(18.0158, H2O.molarMass);
         });
+
+        it('should parse C2H4O2', function () {
+            var C2H4O2 = new Compound('C2H4O2');
+
+            var H = table.get('H');
+            var C = table.get('C');
+            var O = table.get('O');
+
+            assert.deepEqual(H, C2H4O2.elements[0].element);
+            assert.equal(4, C2H4O2.elements[0].quantity);
+
+            assert.deepEqual(C, C2H4O2.elements[1].element);
+            assert.equal(2, C2H4O2.elements[1].quantity);
+
+            assert.deepEqual(O, C2H4O2.elements[2].element);
+            assert.equal(2, C2H4O2.elements[2].quantity);
+
+            assert.equal(60.0536, C2H4O2.molarMass);
+        });
+
+        it('should parse C12H22O11', function () {
+            var C12H22O11 = new Compound('C12H22O11');
+
+            var H = table.get('H');
+            var C = table.get('C');
+            var O = table.get('O');
+
+            assert.deepEqual(H, C12H22O11.elements[0].element);
+            assert.equal(22, C12H22O11.elements[0].quantity);
+
+            assert.deepEqual(C, C12H22O11.elements[1].element);
+            assert.equal(12, C12H22O11.elements[1].quantity);
+
+            assert.deepEqual(O, C12H22O11.elements[2].element);
+            assert.equal(11, C12H22O11.elements[2].quantity);
+
+            assert.equal(342.3058, C12H22O11.molarMass);
+        });
+
+        it('should parse Na', function () {
+            var Sodium = {
+                name: 'Sodium',
+                symbol: 'Na',
+                atomicNumber: 11,
+                mass: 22.99
+            };
+
+            var Na = new Compound('Na');
+
+            assert.deepEqual(Sodium, Na.elements[0].element);
+            assert.equal(1, Na.elements[0].quantity);
+            assert.equal(22.99, Na.molarMass);
+        });
+
+        it('should parse NaOH', function () {
+            var NaOH = new Compound('NaOH');
+
+            var H = table.get('H');
+            var O = table.get('O');
+            var Na = table.get('Na');
+
+            assert.deepEqual(H, NaOH.elements[0].element);
+            assert.equal(1, NaOH.elements[0].quantity);
+
+            assert.deepEqual(O, NaOH.elements[1].element);
+            assert.equal(1, NaOH.elements[1].quantity);
+
+            assert.deepEqual(Na, NaOH.elements[2].element);
+            assert.equal(1, NaOH.elements[2].quantity);
+
+            assert.equal(39.9979, NaOH.molarMass);
+        });
+
+        it('should parse Cr2O7', function () {
+            var Cr2O7 = new Compound('Cr2O7');
+
+            var O = table.get('O');
+            var Cr = table.get('Cr');
+
+            assert.deepEqual(O, Cr2O7.elements[0].element);
+            assert.equal(7, Cr2O7.elements[0].quantity);
+
+            assert.deepEqual(Cr, Cr2O7.elements[1].element);
+            assert.equal(2, Cr2O7.elements[1].quantity);
+
+            assert.equal(216.0, Cr2O7.molarMass);
+        });
+
+        it('should parse Ca(OH)2');
     })
 })
