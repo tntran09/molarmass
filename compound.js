@@ -15,26 +15,27 @@ function Compound(f) {
 
     Object.defineProperties(this, {
         'formula': {
-          value: formula,
-          writable: false,
-          enumerable: true,
-          configurable: false
+            value: formula,
+            writable: false,
+            enumerable: true,
+            configurable: false
         },
         'molarMass': {
-          value: molarMass,
-          writable: false,
-          enumerable: true,
-          configurable: false
+            value: molarMass,
+            writable: false,
+            enumerable: true,
+            configurable: false
         },
         'elements': {
-          get: function () { return elements.slice(); },
-          enumerable: true,
-          configurable: false
+            get: function () { return elements.slice(); },
+            enumerable: true,
+            configurable: false
         }
     });
 
     function validatePattern(formula) {
         var regex = /.*/;
+
         if (!formula.match(regex)) {
             throw new Error('Not a valid chemical formula: ' + formula);
         }
@@ -53,14 +54,14 @@ function Compound(f) {
                 };
 
                 var currentClass = 'S';
-                for(var i of charArray) {
+                for (var i of charArray) {
                     var nextCharClass = regexCode(i);
 
                     // this can probably be done in the parsing loop
                     if (validityMatrix[currentClass][nextCharClass]) {
                         currentClass = nextCharClass;
                     } else {
-                        throw new Error('Not a valid chemical formula: ' + formula + ', '+ currentClass + ' followed by ' + nextCharClass);
+                        throw new Error('Not a valid chemical formula: ' + formula + ', ' + currentClass + ' followed by ' + nextCharClass);
                     }
 
                 }
@@ -95,7 +96,7 @@ function Compound(f) {
     }
 
     function parse(formula) {
-        var listOfElements = []
+        var symbolsCollection = {};
         var charArray = formula.split('');
         var currentSymbol = '';
         var currentQuantity = '';
@@ -109,7 +110,7 @@ function Compound(f) {
                 currentQuantity += ch;
             }
             else if (ch.match(/[A-Z]/)) {
-                listOfElements = addElementToList(listOfElements, currentSymbol, parseInt(currentQuantity));
+                symbolsCollection = addElementToList(symbolsCollection, currentSymbol, parseInt(currentQuantity));
                 currentSymbol = ch;
                 currentQuantity = '';
             }
@@ -117,28 +118,49 @@ function Compound(f) {
                 currentSymbol += ch;
             }
             else if (ch.match(/\(/)) {
-                var oParen = formula.indexOf('(', i);
-                var cParen = formula.indexOf(')', i);
+                var oParen = i;
+                var cParen = findMatchingParentheses(formula, i);
                 i = cParen + 1;
 
-                var groupQuantityLen = 0;
+                var groupQuantityString = '';
                 while (i < charArray.length && charArray[i].match(/[0-9]/)) {
-                    groupQuantityLen++;
+                    groupQuantityString += charArray[i];
                     i++;
                 }
 
-                var groupQuantity = parseInt(formula.substr(cParen + 1, groupQuantityLen));
-                var nestedElements = parse(formula.substr(oParen + 1, cParen - (oParen + 1)));
-                listOfElements = addCompoundToList(listOfElements, nestedElements, groupQuantity);
+                var groupQuantity = parseInt(groupQuantityString);
+                var nestedSymbols = parse(formula.substr(oParen + 1, cParen - (oParen + 1)));
+                symbolsCollection = addCompoundToList(symbolsCollection, nestedSymbols, groupQuantity);
                 i--;
             }
 
             i++;
         }
 
-        listOfElements = addElementToList(listOfElements, currentSymbol, parseInt(currentQuantity));
+        symbolsCollection = addElementToList(symbolsCollection, currentSymbol, parseInt(currentQuantity));
 
-        return listOfElements;
+        return symbolsCollection;
+
+        function findMatchingParentheses(str, index) {
+            var openCount = 0;
+            while (index < str.length) {
+                if (str[index] === ')') {
+                    if (openCount === 1) {
+                        break;
+                    }
+                    else {
+                        openCount -= 1;
+                    }
+                }
+                else if (str[index] === '(') {
+                    openCount += 1;
+                }
+
+                index += 1
+            }
+
+            return index;
+        }
 
         function addElementToList (list, symbol, quantity) {
             if (symbol) {
@@ -154,13 +176,14 @@ function Compound(f) {
             return list;
         }
 
-        function addCompoundToList (list, compound, quantity) {
-            for(var symbol in compound.elements) {
+        function addCompoundToList (list, symbols, quantity) {
+            quantity = quantity || 1;
+            for(var symbol in symbols) {
                 if (list[symbol]) {
-                    list[symbol] = list[symbol] + (quantity * compound.elements[symbol]);
+                    list[symbol] = list[symbol] + (quantity * symbols[symbol]);
                 }
                 else {
-                    list[symbol] = compound.elements[symbol] * quantity;
+                    list[symbol] = symbols[symbol] * quantity;
                 }
             }
 
@@ -172,39 +195,28 @@ function Compound(f) {
         var elements = [];
 
         for(var s in symbolQuantities) {
-            var hasExistingElement = false;
-
-            for(var i = 0; i < elements.length && !hasExistingElement; i++) {
-                if (elements[i].element.symbol === s) {
-                    elements[i].element.quantity += symbolQuantities[s];
-                    hasExistingElement = true;
-                }
+            var e = table.get(s);
+            if (e) {
+                elements.push({
+                    element: e,
+                    quantity: symbolQuantities[s]
+                });
             }
-
-            if (!hasExistingElement) {
-                var e = table.get(s);
-                if (e) {
-                    elements.push({
-                        element: e,
-                        quantity: symbolQuantities[s]
-                    });
-                }
-                else {
-                    elements.push({
-                        element: {
-                            name: '',
-                            symbol: s,
-                            atomicNumber: 0,
-                            mass: 0.0
-                        },
-                        quantity: symbolQuantities[s]
-                  });
-                }
+            else {
+                elements.push({
+                    element: {
+                        name: '',
+                        symbol: s,
+                        atomicNumber: 0,
+                        mass: 0.0
+                    },
+                    quantity: symbolQuantities[s]
+              });
             }
         }
 
         elements.sort(function compareCompound(a, b) {
-            return a.element.atomicNumber - b.element.atomicNumber
+            return a.element.atomicNumber - b.element.atomicNumber;
         });
 
         return elements;
