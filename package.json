@@ -4,7 +4,7 @@
   "description": "Calculate the molar mass of a compound",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --harmony"
+    "test": "mocha"
   },
   "keywords": [
     "chemistry",
@@ -13,7 +13,14 @@
   ],
   "author": {
     "name": "Toan Tran",
-    "email": ""
+    "email": "ttkbnt@hotmail.com"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tntran09/molarmass.git"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4"
+  }
 }
