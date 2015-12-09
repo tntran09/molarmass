@@ -27,6 +27,7 @@ describe('compound', function () {
                 atomicNumber: 1,
                 mass: 1.0079
             };
+
             var H = new Compound('H');
 
             assert.deepEqual(Hydrogen, H.elements[0].element);
@@ -36,6 +37,7 @@ describe('compound', function () {
 
         it('should parse OH', function () {
             var OH = new Compound('OH');
+
             var H = table.get('H');
             var O = table.get('O');
 
@@ -48,6 +50,7 @@ describe('compound', function () {
 
         it('should parse H2', function () {
             var H2 = new Compound('H2');
+
             var H = table.get('H');
 
             assert.deepEqual(H, H2.elements[0].element);
@@ -55,8 +58,20 @@ describe('compound', function () {
             assert.equal(2.0158, H2.molarMass);
         });
 
+        it('should parse (S8)', function () {
+            var S8 = new Compound('(S8)');
+
+            var S = table.get('S');
+
+            assert.deepEqual(S, S8.elements[0].element);
+            assert.equal(8, S8.elements[0].quantity);
+
+            assert.equal(256.48, S8.molarMass);
+        });
+
         it('should parse H2O', function () {
             var H2O = new Compound('H2O');
+
             var H = table.get('H');
             var O = table.get('O');
 
@@ -67,25 +82,6 @@ describe('compound', function () {
             assert.equal(1, H2O.elements[1].quantity);
 
             assert.equal(18.0158, H2O.molarMass);
-        });
-
-        it('should parse C2H4O2', function () {
-            var C2H4O2 = new Compound('C2H4O2');
-
-            var H = table.get('H');
-            var C = table.get('C');
-            var O = table.get('O');
-
-            assert.deepEqual(H, C2H4O2.elements[0].element);
-            assert.equal(4, C2H4O2.elements[0].quantity);
-
-            assert.deepEqual(C, C2H4O2.elements[1].element);
-            assert.equal(2, C2H4O2.elements[1].quantity);
-
-            assert.deepEqual(O, C2H4O2.elements[2].element);
-            assert.equal(2, C2H4O2.elements[2].quantity);
-
-            assert.equal(60.0536, C2H4O2.molarMass);
         });
 
         it('should parse C12H22O11', function () {
@@ -105,25 +101,6 @@ describe('compound', function () {
             assert.equal(11, C12H22O11.elements[2].quantity);
 
             assert.equal(342.3058, C12H22O11.molarMass);
-        });
-
-        it('should parse NH4OH', function () {
-            var NH4OH = new Compound('NH4OH');
-
-            var H = table.get('H');
-            var N = table.get('N');
-            var O = table.get('O');
-
-            assert.deepEqual(H, NH4OH.elements[0].element);
-            assert.equal(5, NH4OH.elements[0].quantity);
-
-            assert.deepEqual(N, NH4OH.elements[1].element);
-            assert.equal(1, NH4OH.elements[1].quantity);
-
-            assert.deepEqual(O, NH4OH.elements[2].element);
-            assert.equal(1, NH4OH.elements[2].quantity);
-
-            assert.equal(35.0465, NH4OH.molarMass);
         });
 
         it('should parse H(CO)(CHOH)5H', function () {
@@ -212,6 +189,51 @@ describe('compound', function () {
 
             assert.equal(74.0958, cmpd.molarMass);
         });
+
+        it('should parse Mg3(PO4)2', function () {
+            var cmpd = new Compound('Mg3(PO4)2');
+
+            var O = table.get('O');
+            var Mg = table.get('Mg');
+            var P = table.get('P');
+
+            assert.deepEqual(O, cmpd.elements[0].element);
+            assert.equal(8, cmpd.elements[0].quantity);
+
+            assert.deepEqual(Mg, cmpd.elements[1].element);
+            assert.equal(3, cmpd.elements[1].quantity);
+
+            assert.deepEqual(P, cmpd.elements[2].element);
+            assert.equal(2, cmpd.elements[2].quantity);
+
+            assert.equal(262.848, cmpd.molarMass)
+        });
+
+        it('should parse ((((Pt)7)8))', function () {
+            var cmpd = new Compound('((((Pt)7)5))');
+
+            var Pt = table.get('Pt');
+
+            assert.deepEqual(Pt, cmpd.elements[0].element);
+            assert.equal(35, cmpd.elements[0].quantity);
+
+            assert.equal(6827.8, cmpd.molarMass);
+        });
+
+        it('should parse (Fe2)O3', function () {
+            var cmpd = new Compound('(Fe2)O3');
+
+            var Fe = table.get('Fe');
+            var O = table.get('O');
+
+            assert.deepEqual(O, cmpd.elements[0].element);
+            assert.equal(3, cmpd.elements[0].quantity);
+
+            assert.deepEqual(Fe, cmpd.elements[1].element);
+            assert.equal(2, cmpd.elements[1].quantity);
+
+            assert.equal(159.7, cmpd.molarMass);
+        });
     });
 
     describe('compounds with unknown elements', function () {
@@ -240,13 +262,13 @@ describe('compound', function () {
         describe('failures starting the compound', function () {
             it('should fail when starting with lowercase', function () {
                 assert.throws(function () {
-                    var c = new Compound('aCH4');
+                    var c = new Compound('pCH4');
                 });
             });
 
             it('should fail when starting with number', function () {
               assert.throws(function () {
-                    var c = new Compound('95Am');
+                    var c = new Compound('4(Zn)');
               });
             });
 
@@ -274,14 +296,48 @@ describe('compound', function () {
         });
 
         describe('failures after open parentheses', function () {
-            it('should fail when followed by lowercase');
-            it('should fail when followed by number');
-            it('should fail when followed by close parentheses');
-            it('should fail when ending with open parentheses');
+            it('should fail when followed by lowercase', function () {
+                assert.throws(function () {
+                    var c = new Compound('(k)');
+                });
+            });
+
+            it('should fail when followed by number', function () {
+                assert.throws(function () {
+                    var c = new Compound('H2O(2)');
+                });
+            });
+
+            it('should fail when followed by close parentheses', function () {
+                assert.throws(function () {
+                    var c = new Compound('Tc()');
+                });
+            });
+
+            it('should fail when ending with open parentheses', function () {
+                assert.throws(function () {
+                    var c = new Compound('K2SO4(');
+                })
+            });
         });
 
         describe('failures after close parentheses', function () {
-            it('should fail when followed by lowercase');
+            it('should fail when followed by lowercase', function () {
+                assert.throws(function () {
+                    var c = new Compound('(CH3)cH3')
+                })
+            });
+        });
+
+        describe('failures containing special characters', function () {
+            it('should fail when containing any non-numeric, non-alphabetic characters or parentheses', function () {
+                assert.throws(function () {
+                    var c = new Compound('Cl-');
+                });
+                assert.throws(function () {
+                    var c = new Compound('Ag2+');
+                });
+            });
         });
     });
 });
