@@ -17,8 +17,25 @@ describe('molarmass', function () {
 
     it('should return 0 on empty string', function () {
         var mass = molarmass('');
-        assert.strictEqual(0, mass);
+        assert.equal(0, mass);
     });
+
+    it('should return the same values for tests in test-compound.js', function () {
+        assert.equal(1.0079, molarmass('H'));
+        assert.equal(17.0079, molarmass('OH'));
+        assert.equal(2.0158, molarmass('H2'));
+        assert.equal(256.48, molarmass('(S8)'));
+        assert.equal(18.0158, molarmass('H2O'));
+        assert.equal(342.3058, molarmass('C12H22O11'));
+        assert.equal(180.1608, molarmass('H(CO)(CHOH)5H'));
+        assert.equal(22.99, molarmass('Na'));
+        assert.equal(39.9979, molarmass('NaOH'));
+        assert.equal(216, molarmass('Cr2O7'));
+        assert.equal(74.0958, molarmass('Ca(OH)2'));
+        assert.equal(262.848, molarmass('Mg3(PO4)2'));
+        assert.equal(6827.8, molarmass('((((Pt)7)5))'));
+        assert.equal(159.7, molarmass('(Fe2)O3'));
+    })
 });
 
 describe('periodic table', function () {

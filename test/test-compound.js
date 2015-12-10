@@ -209,7 +209,7 @@ describe('compound', function () {
             assert.equal(262.848, cmpd.molarMass)
         });
 
-        it('should parse ((((Pt)7)8))', function () {
+        it('should parse ((((Pt)7)5))', function () {
             var cmpd = new Compound('((((Pt)7)5))');
 
             var Pt = table.get('Pt');
