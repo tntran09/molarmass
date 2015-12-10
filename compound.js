@@ -34,41 +34,37 @@ function Compound(f) {
     });
 
     function validatePattern(formula) {
-        var regex = /.*/;
+        var validityMatrix = {
+            S: { U: true,                   O: true,          E: true },
+            U: { U: true, L: true, N: true, O: true, C: true, E: true },
+            L: { U: true,          N: true, O: true, C: true, E: true },
+            N: { U: true,          N: true, O: true, C: true, E: true },
+            O: { U: true,                   O: true                   },
+            C: { U: true,          N: true, O: true, C: true, E: true },
+            E: {                                                      }
+        };
+        var currentClass = 'S', nextCharClass = '?';
+        var charArray = formula.split('');
 
-        if (!formula.match(regex)) {
-            throw new Error('Not a valid chemical formula: ' + formula);
-        }
+        if (charArray.length > 0) {
+            for (var i of charArray) {
+                nextCharClass = regexCode(i);
 
-        if (formula.length > 0) {
-            var charArray = formula.split('');
-            if ('we are not able to create a regex for the valid formula') {
-                var validityMatrix = {
-                    S: { U: true,                   O: true,          E: true },
-                    U: { U: true, L: true, N: true, O: true, C: true, E: true },
-                    L: { U: true,          N: true, O: true, C: true, E: true },
-                    N: { U: true,          N: true, O: true, C: true, E: true },
-                    O: { U: true,                   O: true                   },
-                    C: { U: true,          N: true, O: true, C: true, E: true },
-                    E: {                                                      }
-                };
-
-                var currentClass = 'S';
-                for (var i of charArray) {
-                    var nextCharClass = regexCode(i);
-
-                    // this can probably be done in the parsing loop
-                    if (validityMatrix[currentClass][nextCharClass]) {
-                        currentClass = nextCharClass;
-                    } else {
-                        throw new Error('Not a valid chemical formula: ' + formula + ', ' + currentClass + ' followed by ' + nextCharClass);
-                    }
-
+                // this can probably be done in the parsing loop
+                if (validityMatrix[currentClass][nextCharClass]) {
+                    currentClass = nextCharClass;
+                }
+                else if (nextCharClass === '?') {
+                    throw new Error('Invalid character in a chemical formula: ' + i);
+                }
+                else {
+                    throw new Error('Not a valid chemical formula: ' + formula + ', ' + currentClass + ' followed by ' + nextCharClass);
                 }
 
-                if (!validityMatrix[currentClass]['E']) {
-                    throw new Error('Not a valid chemical formula: ' + formula + ', ended with ' + currentClass);
-                }
+            }
+
+            if (!validityMatrix[currentClass]['E']) {
+                throw new Error('Not a valid chemical formula: ' + formula + ', ended with ' + currentClass);
             }
 
             var leftParenCount  = charArray.reduce(function (count, current) { return current === '(' ? count + 1 : count; }, 0);
