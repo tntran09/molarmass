@@ -2,13 +2,11 @@
 
 ## Install
 
-You can get it on npm.
-
 ```
 npm install molarmass --save
 ```
 
-# Usage
+## Usage
 
 ```js
 var molarmass = require('molarmass');
