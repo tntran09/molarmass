@@ -1,8 +1,8 @@
 'use strict';
 
 var assert = require('assert');
-var table = require('../table');
-var Compound = require('../compound');
+var table = require('../lib/table');
+var Compound = require('../lib/compound');
 
 describe('compound', function () {
     describe('validation of parentheses', function () {

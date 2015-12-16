@@ -39,7 +39,7 @@ describe('molarmass', function () {
 });
 
 describe('periodic table', function () {
-    var table = require('../table');
+    var table = require('../lib/table');
 
     it('should be required without errors', function () {
         assert(true);
@@ -73,7 +73,7 @@ describe('periodic table', function () {
 });
 
 describe('compound', function () {
-    var Compound = require('../compound');
+    var Compound = require('../lib/compound');
 
     describe('module', function () {
         it('should be required without errors', function () {
