@@ -1,6 +1,6 @@
 {
   "name": "molarmass",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Calculate the molar mass of a compound",
   "main": "index.js",
   "scripts": {
@@ -27,5 +27,5 @@
   "devDependencies": {
     "mocha": "^2.3.4"
   },
-  "tonicExampleFilename": "lib/tonicExample.js"
+  "tonicExampleFilename": "example/tonicExample.js"
 }
