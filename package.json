@@ -9,7 +9,11 @@
   "keywords": [
     "chemistry",
     "molar mass",
-    "mass"
+    "mass",
+    "molecule",
+    "chemical",
+    "formula",
+    "element"
   ],
   "author": {
     "name": "Toan Tran",
@@ -23,5 +27,5 @@
   "devDependencies": {
     "mocha": "^2.3.4"
   },
-  "tonicExampleFilename": "tonicExample.js"
+  "tonicExampleFilename": "lib/tonicExample.js"
 }
