@@ -1,6 +1,6 @@
 {
   "name": "molarmass",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Calculate the molar mass of a compound",
   "main": "index.js",
   "scripts": {
