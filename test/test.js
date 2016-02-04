@@ -35,6 +35,8 @@ describe('molarmass', function () {
         assert.equal(262.848, molarmass('Mg3(PO4)2'));
         assert.equal(6827.8, molarmass('((((Pt)7)5))'));
         assert.equal(159.7, molarmass('(Fe2)O3'));
+        assert.equal(0, molarmass('H0'));
+        assert.equal(0, molarmass('(OH)0'));
     })
 });
 

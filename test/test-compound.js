@@ -234,6 +234,32 @@ describe('compound', function () {
 
             assert.equal(159.7, cmpd.molarMass);
         });
+
+        it('should parse 0 as zero quantity on an element', function () {
+            var cmpd = new Compound('H0');
+
+            var H = table.get('H');
+
+            assert.deepEqual(H, cmpd.elements[0].element);
+            assert.equal(0, cmpd.elements[0].quantity);
+
+            assert.equal(0, cmpd.molarMass);
+        });
+
+        it('should parse 0 as zero quantity on a group', function () {
+            var cmpd = new Compound('(OH)0');
+
+            var H = table.get('H');
+            var O = table.get('O');
+
+            assert.deepEqual(H, cmpd.elements[0].element);
+            assert.equal(0, cmpd.elements[0].quantity);
+
+            assert.deepEqual(O, cmpd.elements[1].element);
+            assert.equal(0, cmpd.elements[1].quantity);
+
+            assert.equal(0, cmpd.molarMass);
+        });
     });
 
     describe('compounds with unknown elements', function () {
