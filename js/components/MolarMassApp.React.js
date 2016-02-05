@@ -1,4 +1,6 @@
 var React = require('react');
+var InputSection = require('./InputSection.React');
+var ResultsSection = require('./ResultsSection.React');
 
 var MolarMassApp = React.createClass({
   getInitialState: function () {
