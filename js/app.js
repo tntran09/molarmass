@@ -2,30 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var molarmass = require('molarmass');
 
-//MolarMassApp.React.js
-var MolarMassApp = React.createClass({
-  getInitialState: function () {
-    return {
-      formula: '',
-      history: []
-    }
-  },
-
-  _handleChange: function (formula) {
-    this.setState({
-      formula: formula
-    });
-  },
-
-  render: function () {
-    return (
-      <div id="molarMassApp">
-        <InputSection formula={this.state.formula} handleChange={this._handleChange} />
-        <ResultsSection formula={this.state.formula} />
-      </div>
-    );
-  }
-});
+var MolarMassApp = require('./components/MolarMassApp.React');
 
 //InputSection.React.js
 var InputSection = React.createClass({
