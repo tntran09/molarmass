@@ -94,14 +94,14 @@ process.umask = function() { return 0; };
 },{}],2:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
-var molarmass = require('molarmass');
 
 var MolarMassApp = require('./components/MolarMassApp.React');
 
 ReactDOM.render(React.createElement(MolarMassApp, null), document.getElementById('appContainer'));
 
-},{"./components/MolarMassApp.React":6,"molarmass":8,"react":168,"react-dom":12}],3:[function(require,module,exports){
+},{"./components/MolarMassApp.React":6,"react":168,"react-dom":12}],3:[function(require,module,exports){
 var React = require('react');
+var molarmass = require('molarmass');
 
 var ActiveCompoundSection = React.createClass({
   displayName: 'ActiveCompoundSection',
@@ -114,7 +114,9 @@ var ActiveCompoundSection = React.createClass({
 
     try {
       mass = molarmass(this.props.formula);
-    } catch (e) {}
+    } catch (e) {
+      // leave mass as 0
+    }
 
     return React.createElement(
       'div',
@@ -133,7 +135,7 @@ var ActiveCompoundSection = React.createClass({
 
 module.exports = ActiveCompoundSection;
 
-},{"react":168}],4:[function(require,module,exports){
+},{"molarmass":8,"react":168}],4:[function(require,module,exports){
 var React = require('react');
 
 var HistorySection = React.createClass({
@@ -159,15 +161,25 @@ var InputSection = React.createClass({
   render: function () {
     return React.createElement(
       "div",
-      { id: "inputSection" },
+      { id: "inputSection", className: "pure-u-1-1" },
       React.createElement(
         "form",
-        null,
-        React.createElement("input", { type: "text", placeholder: "Examples: H20, (NH4)2Cr2O7", ref: "formulaInput", onChange: this._onChange }),
+        { className: "pure-form" },
         React.createElement(
-          "button",
-          { type: "submit" },
-          "->"
+          "fieldset",
+          null,
+          React.createElement(
+            "label",
+            { htmlFor: "formulaInput" },
+            "Enter a chemical formula:"
+          ),
+          React.createElement("input", { type: "text", name: "formulaInput", placeholder: "Examples: H20, (NH4)2Cr2O7", ref: "formulaInput", onChange: this._onChange }),
+          React.createElement(
+            "button",
+            { type: "submit", className: "pure-button" },
+            React.createElement("i", { className: "fa fa-rocket" }),
+            " Sign In"
+          )
         )
       )
     );
@@ -200,7 +212,7 @@ var MolarMassApp = React.createClass({
   render: function () {
     return React.createElement(
       'div',
-      { id: 'molarMassApp' },
+      { id: 'molarMassApp', className: 'pure-u' },
       React.createElement(InputSection, { formula: this.state.formula, handleChange: this._handleChange }),
       React.createElement(ResultsSection, { formula: this.state.formula })
     );

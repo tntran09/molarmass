@@ -1,4 +1,5 @@
 var React = require('react');
+var molarmass = require('molarmass');
 
 var ActiveCompoundSection = React.createClass({
   render: function () {
@@ -11,7 +12,7 @@ var ActiveCompoundSection = React.createClass({
       mass = molarmass(this.props.formula);
     }
     catch (e) {
-
+      // leave mass as 0
     }
 
     return (

@@ -18,7 +18,7 @@ var MolarMassApp = React.createClass({
 
   render: function () {
     return (
-      <div id="molarMassApp">
+      <div id="molarMassApp" className="pure-u">
         <InputSection formula={this.state.formula} handleChange={this._handleChange} />
         <ResultsSection formula={this.state.formula} />
       </div>
