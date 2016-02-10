@@ -541,7 +541,8 @@ function consolidateSymbols(symbolQuantities) {
 function calculateMass(elements) {
     var totalMass = 0.0;
 
-    for(var e of elements) {
+    for(var i = 0; i < elements.length; i++) {
+        var e = elements[i];
         totalMass += e.element.mass * e.quantity;
     }
 
