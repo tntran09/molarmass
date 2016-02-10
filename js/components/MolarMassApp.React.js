@@ -1,4 +1,5 @@
 var React = require('react');
+var HeaderSection = require('./HeaderSection.React');
 var InputSection = require('./InputSection.React');
 var ResultsSection = require('./ResultsSection.React');
 
@@ -18,7 +19,8 @@ var MolarMassApp = React.createClass({
 
   render: function () {
     return (
-      <div id="molarMassApp" className="pure-u">
+      <div id="molarMassApp">
+        <HeaderSection />
         <InputSection formula={this.state.formula} handleChange={this._handleChange} />
         <ResultsSection formula={this.state.formula} />
       </div>

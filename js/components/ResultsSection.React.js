@@ -5,7 +5,7 @@ var HistorySection = require('./HistorySection.React');
 var ResultsSection = React.createClass({
   render: function () {
     return (
-      <div id="resultsSection">
+      <div id="resultsSection" className="pure-g">
         <ActiveCompoundSection formula={this.props.formula}/>
         <HistorySection />
       </div>
