@@ -101,22 +101,14 @@ ReactDOM.render(React.createElement(MolarMassApp, null), document.getElementById
 
 },{"./components/MolarMassApp.React":7,"react":169,"react-dom":13}],3:[function(require,module,exports){
 var React = require('react');
-var molarmass = require('molarmass');
 
 var ActiveCompoundSection = React.createClass({
   displayName: 'ActiveCompoundSection',
 
   render: function () {
-    var mass = 0.0;
     var formulaAsHTML = {
       __html: this.props.formula.replace(/[0-9]+/g, '<sub>$&</sub>')
     };
-
-    try {
-      mass = molarmass(this.props.formula);
-    } catch (e) {
-      // leave mass as 0, display error
-    }
 
     return React.createElement(
       'div',
@@ -130,7 +122,7 @@ var ActiveCompoundSection = React.createClass({
           'p',
           null,
           'Molar Mass: ',
-          mass
+          this.props.mass
         ),
         React.createElement(
           'table',
@@ -172,7 +164,7 @@ var ActiveCompoundSection = React.createClass({
 
 module.exports = ActiveCompoundSection;
 
-},{"molarmass":9,"react":169}],4:[function(require,module,exports){
+},{"react":169}],4:[function(require,module,exports){
 var React = require('react');
 
 var HeaderSection = React.createClass({
@@ -182,10 +174,10 @@ var HeaderSection = React.createClass({
     return React.createElement(
       "div",
       { id: "headerSection", className: "pure-g" },
-      React.createElement("div", { className: "pure-u-1-24" }),
+      React.createElement("div", { className: "pure-u-1-12" }),
       React.createElement(
         "div",
-        { className: "pure-u-23-24" },
+        { className: "pure-u-11-12" },
         React.createElement(
           "h1",
           null,
@@ -225,27 +217,39 @@ var InputSection = React.createClass({
     return React.createElement(
       "div",
       { id: "inputSection", className: "pure-g" },
-      React.createElement("div", { className: "pure-u-1-24" }),
+      React.createElement("div", { className: "pure-u-1-1 pure-u-sm-1-12" }),
       React.createElement(
         "div",
-        { className: "pure-u-22-24" },
+        { className: "pure-u-1-1 pure-u-sm-20-24" },
         React.createElement(
-          "form",
-          { className: "pure-form" },
+          "div",
+          { className: "pure-u-1-1 pure-u-sm-3-4" },
           React.createElement(
-            "fieldset",
-            null,
-            React.createElement("input", { type: "text", name: "formulaInput", className: "pure-u-1-1 pure-u-sm-5-6", placeholder: "Enter a chemical formula...", ref: "formulaInput", onChange: this._onChange }),
+            "form",
+            { className: "pure-form" },
             React.createElement(
-              "span",
+              "fieldset",
               null,
-              " "
-            ),
-            React.createElement("input", { type: "submit", className: "pure-button pure-u-1-1 pure-u-sm-1-8", value: "+" })
+              React.createElement("input", { type: "text", name: "formulaInput", className: "pure-u-1-1 pure-u-sm-20-24", placeholder: "Enter a chemical formula...", ref: "formulaInput", onChange: this._onChange }),
+              React.createElement(
+                "span",
+                null,
+                " "
+              ),
+              React.createElement("input", { type: "submit", className: "pure-button pure-u-1-1 pure-u-sm-2-24", value: "+" })
+            )
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "pure-u-1-1 pure-u-sm-1-4" },
+          React.createElement(
+            "p",
+            { className: "formulaError", style: { color: 'red' } },
+            this.props.errorMessage
           )
         )
-      ),
-      React.createElement("div", { className: "pure-u-1-24" })
+      )
     );
   }
 });
@@ -254,6 +258,7 @@ module.exports = InputSection;
 
 },{"react":169}],7:[function(require,module,exports){
 var React = require('react');
+var molarmass = require('molarmass');
 var HeaderSection = require('./HeaderSection.React');
 var InputSection = require('./InputSection.React');
 var ResultsSection = require('./ResultsSection.React');
@@ -264,14 +269,32 @@ var MolarMassApp = React.createClass({
   getInitialState: function () {
     return {
       formula: '',
-      history: []
+      history: [],
+      mass: 0.0
     };
   },
 
   _handleChange: function (formula) {
+    var mass = this._parse(formula);
+
     this.setState({
-      formula: formula
+      formula: formula,
+      mass: mass
     });
+  },
+
+  _parse: function (formula) {
+    var mass = 0.0;
+
+    try {
+      mass = molarmass(formula);
+    } catch (e) {
+      this.setState({
+        errorMessage: e.message
+      });
+    }
+
+    return mass;
   },
 
   render: function () {
@@ -279,15 +302,15 @@ var MolarMassApp = React.createClass({
       'div',
       { id: 'molarMassApp' },
       React.createElement(HeaderSection, null),
-      React.createElement(InputSection, { formula: this.state.formula, handleChange: this._handleChange }),
-      React.createElement(ResultsSection, { formula: this.state.formula })
+      React.createElement(InputSection, { formula: this.state.formula, errorMessage: this.state.errorMessage, handleChange: this._handleChange }),
+      React.createElement(ResultsSection, { formula: this.state.formula, mass: this.state.mass })
     );
   }
 });
 
 module.exports = MolarMassApp;
 
-},{"./HeaderSection.React":4,"./InputSection.React":6,"./ResultsSection.React":8,"react":169}],8:[function(require,module,exports){
+},{"./HeaderSection.React":4,"./InputSection.React":6,"./ResultsSection.React":8,"molarmass":9,"react":169}],8:[function(require,module,exports){
 var React = require('react');
 var ActiveCompoundSection = require('./ActiveCompoundSection.React');
 var HistorySection = require('./HistorySection.React');
@@ -299,7 +322,7 @@ var ResultsSection = React.createClass({
     return React.createElement(
       'div',
       { id: 'resultsSection', className: 'pure-g' },
-      React.createElement(ActiveCompoundSection, { formula: this.props.formula }),
+      React.createElement(ActiveCompoundSection, { formula: this.props.formula, mass: this.props.mass }),
       React.createElement(HistorySection, null)
     );
   }
