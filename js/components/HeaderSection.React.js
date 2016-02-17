@@ -4,8 +4,8 @@ var HeaderSection = React.createClass({
   render: function () {
     return (
       <div id="headerSection" className="pure-g">
-        <div className="pure-u-1-24"></div>
-        <div className="pure-u-23-24">
+        <div className="pure-u-1-12"></div>
+        <div className="pure-u-11-12">
           <h1>Molar Mass</h1>
         </div>
       </div>
