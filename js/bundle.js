@@ -288,6 +288,9 @@ var MolarMassApp = React.createClass({
 
     try {
       mass = molarmass(formula);
+      this.setState({
+        errorMessage: ''
+      });
     } catch (e) {
       this.setState({
         errorMessage: e.message
