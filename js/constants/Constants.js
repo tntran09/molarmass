@@ -1,0 +1,4 @@
+module.exports = {
+  ADD_TO_HISTORY: 'ADD_TO_HISTORY',
+  UPDATE_FORMULA: 'UPDATE_FORMULA'
+};

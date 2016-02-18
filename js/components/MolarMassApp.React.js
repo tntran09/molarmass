@@ -1,50 +1,48 @@
 var React = require('react');
-var molarmass = require('molarmass');
+var MolarMassStore = require('../stores/MolarMassStore');
 var HeaderSection = require('./HeaderSection.React');
 var InputSection = require('./InputSection.React');
 var ResultsSection = require('./ResultsSection.React');
+
+function getAppState() {
+  var compound = MolarMassStore.getActiveCompound();
+
+  return {
+    formula: compound.formula,
+    mass: compound.mass,
+    // ...elements
+    history: MolarMassStore.getHistory(),
+    errorMessage: MolarMassStore.getError()
+  };
+}
 
 var MolarMassApp = React.createClass({
   getInitialState: function () {
     return {
       formula: '',
       history: [],
-      mass: 0.0
+      mass: 0.0,
+      errorMessage: ''
     }
   },
 
-  _handleChange: function (formula) {
-    var mass = this._parse(formula);
-
-    this.setState({
-      formula: formula,
-      mass: mass
-    });
+  componentDidMount: function() {
+    MolarMassStore.addChangeListener(this._onChange);
   },
 
-  _parse: function (formula) {
-    var mass = 0.0;
+  componentWillUnmount: function() {
+    MolarMassStore.removeChangeListener(this._onChange);
+  },
 
-    try {
-      mass = molarmass(formula);
-      this.setState({
-        errorMessage: ''
-      });
-    }
-    catch (e) {
-      this.setState({
-        errorMessage: e.message
-      });
-    }
-
-    return mass;
+  _onChange: function() {
+    this.setState(getAppState());
   },
 
   render: function () {
     return (
       <div id="molarMassApp">
         <HeaderSection />
-        <InputSection formula={this.state.formula} errorMessage={this.state.errorMessage} handleChange={this._handleChange} />
+        <InputSection formula={this.state.formula} errorMessage={this.state.errorMessage} />
         <ResultsSection formula={this.state.formula} mass={this.state.mass} />
       </div>
     );

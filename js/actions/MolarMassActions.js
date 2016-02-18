@@ -1,5 +1,5 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-// var TodoConstants = require('../constants/TodoConstants');
+var AppDispatcher = require('../dispatchers/AppDispatcher');
+var Constants = require('../constants/Constants');
 
 var MolarMassActions = {
   addToHistory: function (formula, mass) {
@@ -8,6 +8,13 @@ var MolarMassActions = {
       formula: formula,
       mass: mass
     })
+  },
+
+  update: function (formula) {
+    AppDispatcher.dispatch({
+      actionType: Constants.UPDATE_FORMULA,
+      formula: formula
+    });
   }
 };
 

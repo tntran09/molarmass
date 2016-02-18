@@ -1,7 +1,10 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AppDispatcher = require('../dispatchers/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-// var TodoConstants = require('../constants/TodoConstants');
+var Constants = require('../constants/Constants');
 var assign = require('object-assign');
+var molarmass = require('molarmass');
+
+var CHANGE_EVENT = 'change';
 
 var _activeCompound = {};
 var _compoundHistory = [];
@@ -13,6 +16,25 @@ function addToHistory (formula, mass) {
     formula: formula,
     mass: mass
   });
+
+  _activeCompound = {
+    formula: '',
+    mass: 0.0
+  };
+  _errorMessage = '';
+}
+
+function update (formula) {
+  _activeCompound.formula = formula;
+  _activeCompound.mass = 0.0;
+
+  try {
+    _activeCompound.mass = molarmass(formula);
+    _errorMessage = '';
+  }
+  catch (e) {
+    _errorMessage = e.message;
+  }
 }
 
 var MolarMassStore = assign({}, EventEmitter.prototype, {
@@ -26,7 +48,7 @@ var MolarMassStore = assign({}, EventEmitter.prototype, {
 
   getError: function () {
     return _errorMessage;
-  }
+  },
 
   emitChange: function() {
     this.emit(CHANGE_EVENT);
@@ -42,7 +64,15 @@ var MolarMassStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
   switch(action.actionType) {
     case Constants.ADD_TO_HISTORY:
-    // case Constants.xxx: ... MolarMassStore.emitChange; break;
+      addToHistory(action.formula, action.mass)
+      MolarMassStore.emitChange();
+      break;
+    case Constants.UPDATE_FORMULA:
+      update(action.formula);
+      MolarMassStore.emitChange();
+      break;
     default: // noop
   }
 });
+
+module.exports = MolarMassStore;
