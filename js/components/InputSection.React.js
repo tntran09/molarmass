@@ -14,24 +14,23 @@ var InputSection = React.createClass({
   render: function () {
     return (
       <div id="inputSection" className="pure-g">
-        <div className="pure-u-1-1 pure-u-sm-1-12"></div>
-        <div className="pure-u-1-1 pure-u-sm-20-24">
-
-          <div className="pure-u-1-1 pure-u-sm-3-4">
+        <div className="pure-u-1-24"></div>
+        <div className="pure-u-22-24">
+          <div className="pure-u-1-1 pure-u-sm-4-5">
             <form className="pure-form" onSubmit={this._onSubmit}>
               <fieldset>
-                <input type="text" name="formulaInput" className="pure-u-1-1 pure-u-sm-20-24" placeholder="Enter a chemical formula..." value={this.props.formula} ref="formulaInput" onChange={this._onFormulaChange} />
+                <input type="text" name="formulaInput" className="pure-u-1-1 pure-u-sm-20-24" placeholder="Enter a chemical formula..."
+                  value={this.props.formula} ref="formulaInput" onChange={this._onFormulaChange} />
                 <span> </span>
                 <input type="submit" className="pure-button pure-u-1-1 pure-u-sm-2-24" value="+" />
               </fieldset>
             </form>
           </div>
 
-          <div className="pure-u-1-1 pure-u-sm-1-4">
-            <p className="formulaError" style={{color: 'red'}}>{this.props.errorMessage}</p>
+          <div className="pure-u-1-1">
+            <p className="formulaError" style={{color: 'red', height: '1em'}}>{this.props.errorMessage}</p>
           </div>
         </div>
-
       </div>
     );
   }

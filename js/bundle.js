@@ -437,8 +437,8 @@ var ActiveCompoundSection = React.createClass({
       React.createElement('div', { className: 'pure-u-1-24' }),
       React.createElement(
         'div',
-        { className: 'pure-u-22-24' },
-        React.createElement('h1', { className: 'chemicalText', dangerouslySetInnerHTML: formulaAsHTML }),
+        { className: 'pure-u-22-24', hidden: this.props.formula.length == 0 },
+        React.createElement('h1', { className: 'chemicalText', style: { height: '1em' }, dangerouslySetInnerHTML: formulaAsHTML }),
         React.createElement(
           'p',
           null,
@@ -447,7 +447,7 @@ var ActiveCompoundSection = React.createClass({
         ),
         React.createElement(
           'table',
-          { className: 'pure-table' },
+          { className: 'pure-table hidden' },
           React.createElement(
             'thead',
             null,
@@ -530,6 +530,11 @@ var HistorySection = React.createClass({
         "td",
         null,
         mass
+      ),
+      React.createElement(
+        "td",
+        null,
+        React.createElement("i", { className: "fa fa-trash" })
       )
     );
   },
@@ -550,7 +555,7 @@ var HistorySection = React.createClass({
 
     return React.createElement(
       "div",
-      { id: "historySection", className: "pure-u-1-1 pure-u-md-1-2" },
+      { id: "historySection", className: "pure-u-1-1 pure-u-md-1-2", hidden: this.props.history.length == 0 },
       React.createElement("div", { className: "pure-u-1-24" }),
       React.createElement(
         "div",
@@ -578,7 +583,8 @@ var HistorySection = React.createClass({
                 "th",
                 null,
                 "Mass (g/mol)"
-              )
+              ),
+              React.createElement("th", null)
             )
           ),
           React.createElement(
@@ -614,20 +620,21 @@ var InputSection = React.createClass({
     return React.createElement(
       'div',
       { id: 'inputSection', className: 'pure-g' },
-      React.createElement('div', { className: 'pure-u-1-1 pure-u-sm-1-12' }),
+      React.createElement('div', { className: 'pure-u-1-24' }),
       React.createElement(
         'div',
-        { className: 'pure-u-1-1 pure-u-sm-20-24' },
+        { className: 'pure-u-22-24' },
         React.createElement(
           'div',
-          { className: 'pure-u-1-1 pure-u-sm-3-4' },
+          { className: 'pure-u-1-1 pure-u-sm-4-5' },
           React.createElement(
             'form',
             { className: 'pure-form', onSubmit: this._onSubmit },
             React.createElement(
               'fieldset',
               null,
-              React.createElement('input', { type: 'text', name: 'formulaInput', className: 'pure-u-1-1 pure-u-sm-20-24', placeholder: 'Enter a chemical formula...', value: this.props.formula, ref: 'formulaInput', onChange: this._onFormulaChange }),
+              React.createElement('input', { type: 'text', name: 'formulaInput', className: 'pure-u-1-1 pure-u-sm-20-24', placeholder: 'Enter a chemical formula...',
+                value: this.props.formula, ref: 'formulaInput', onChange: this._onFormulaChange }),
               React.createElement(
                 'span',
                 null,
@@ -639,10 +646,10 @@ var InputSection = React.createClass({
         ),
         React.createElement(
           'div',
-          { className: 'pure-u-1-1 pure-u-sm-1-4' },
+          { className: 'pure-u-1-1' },
           React.createElement(
             'p',
-            { className: 'formulaError', style: { color: 'red' } },
+            { className: 'formulaError', style: { color: 'red', height: '1em' } },
             this.props.errorMessage
           )
         )

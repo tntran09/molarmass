@@ -9,11 +9,11 @@ var ActiveCompoundSection = React.createClass({
     return (
       <div id="activeCompoundSection" className="pure-u-1-1 pure-u-md-1-2">
         <div className="pure-u-1-24"></div>
-        <div className="pure-u-22-24">
-          <h1 className="chemicalText" dangerouslySetInnerHTML={formulaAsHTML}></h1>
+        <div className="pure-u-22-24" hidden={this.props.formula.length == 0}>
+          <h1 className="chemicalText" style={{height: '1em'}} dangerouslySetInnerHTML={formulaAsHTML}></h1>
           <p>Molar Mass: {this.props.mass}</p>
 
-          <table className="pure-table">
+          <table className="pure-table hidden">
             <thead>
               <tr>
                 <th>Element</th>
