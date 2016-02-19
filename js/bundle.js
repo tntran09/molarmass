@@ -396,11 +396,9 @@ var AppDispatcher = require('../dispatchers/AppDispatcher');
 var Constants = require('../constants/Constants');
 
 var MolarMassActions = {
-  addToHistory: function (formula, mass) {
+  addCurrentCompoundToHistory: function () {
     AppDispatcher.dispatch({
-      actionType: Constants.ADD_TO_HISTORY,
-      formula: formula,
-      mass: mass
+      actionType: Constants.ADD_TO_HISTORY
     });
   },
 
@@ -517,10 +515,75 @@ module.exports = HeaderSection;
 var React = require('react');
 
 var HistorySection = React.createClass({
-  displayName: 'HistorySection',
+  displayName: "HistorySection",
+
+  _buildTableRow: function (key, formula, mass) {
+    return React.createElement(
+      "tr",
+      { key: key },
+      React.createElement(
+        "td",
+        null,
+        formula
+      ),
+      React.createElement(
+        "td",
+        null,
+        mass
+      )
+    );
+  },
+
+  _buildTableBody: function (compounds) {
+    var rows = [];
+
+    for (var key in compounds) {
+      var item = compounds[key];
+      rows.push(this._buildTableRow(key, item.formula, item.mass));
+    }
+
+    return rows;
+  },
 
   render: function () {
-    return React.createElement('table', null);
+    var tbody = this._buildTableBody(this.props.history);
+
+    return React.createElement(
+      "div",
+      { id: "historySection", className: "pure-u-1-2" },
+      React.createElement(
+        "h3",
+        null,
+        "History"
+      ),
+      React.createElement(
+        "table",
+        { className: "pure-table" },
+        React.createElement(
+          "thead",
+          null,
+          React.createElement(
+            "tr",
+            null,
+            React.createElement(
+              "th",
+              null,
+              "Formula"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "Mass (g/mol)"
+            )
+          )
+        ),
+        React.createElement(
+          "tbody",
+          null,
+          tbody
+        )
+      )
+    );
   }
 });
 
@@ -533,12 +596,8 @@ var MolarMassActions = require('../actions/MolarMassActions');
 var InputSection = React.createClass({
   displayName: 'InputSection',
 
-  // TODO: change name
-  _handleSubmitButtonClick: function () {
-    MolarMassActions.addToHistory(this.state.formula, this.state.mass);
-  },
-
   _onSubmit: function (event) {
+    MolarMassActions.addCurrentCompoundToHistory();
     event.preventDefault();
   },
 
@@ -563,13 +622,13 @@ var InputSection = React.createClass({
             React.createElement(
               'fieldset',
               null,
-              React.createElement('input', { type: 'text', name: 'formulaInput', className: 'pure-u-1-1 pure-u-sm-20-24', placeholder: 'Enter a chemical formula...', ref: 'formulaInput', onChange: this._onFormulaChange }),
+              React.createElement('input', { type: 'text', name: 'formulaInput', className: 'pure-u-1-1 pure-u-sm-20-24', placeholder: 'Enter a chemical formula...', value: this.props.formula, ref: 'formulaInput', onChange: this._onFormulaChange }),
               React.createElement(
                 'span',
                 null,
                 ' '
               ),
-              React.createElement('input', { type: 'submit', className: 'pure-button pure-u-1-1 pure-u-sm-2-24', value: '+', onClick: this._handleSubmitButtonClick })
+              React.createElement('input', { type: 'submit', className: 'pure-button pure-u-1-1 pure-u-sm-2-24', value: '+' })
             )
           )
         ),
@@ -638,7 +697,7 @@ var MolarMassApp = React.createClass({
       { id: 'molarMassApp' },
       React.createElement(HeaderSection, null),
       React.createElement(InputSection, { formula: this.state.formula, errorMessage: this.state.errorMessage }),
-      React.createElement(ResultsSection, { formula: this.state.formula, mass: this.state.mass })
+      React.createElement(ResultsSection, { formula: this.state.formula, mass: this.state.mass, history: this.state.history })
     );
   }
 });
@@ -658,7 +717,7 @@ var ResultsSection = React.createClass({
       'div',
       { id: 'resultsSection', className: 'pure-g' },
       React.createElement(ActiveCompoundSection, { formula: this.props.formula, mass: this.props.mass }),
-      React.createElement(HistorySection, null)
+      React.createElement(HistorySection, { history: this.props.history })
     );
   }
 });
@@ -687,22 +746,27 @@ var molarmass = require('molarmass');
 
 var CHANGE_EVENT = 'change';
 
-var _activeCompound = {};
+var _activeCompound = {
+  formula: '',
+  mass: 0.0
+};
 var _compoundHistory = [];
 var _errorMessage = '';
 
 // ...private functions...
-function addToHistory(formula, mass) {
-  _compoundHistory.push({
-    formula: formula,
-    mass: mass
-  });
+function addToHistory() {
+  if (_activeCompound.formula) {
+    _compoundHistory.push({
+      formula: _activeCompound.formula,
+      mass: _activeCompound.mass
+    });
 
-  _activeCompound = {
-    formula: '',
-    mass: 0.0
-  };
-  _errorMessage = '';
+    _activeCompound = {
+      formula: '',
+      mass: 0.0
+    };
+    _errorMessage = '';
+  }
 }
 
 function update(formula) {
@@ -744,7 +808,7 @@ var MolarMassStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case Constants.ADD_TO_HISTORY:
-      addToHistory(action.formula, action.mass);
+      addToHistory();
       MolarMassStore.emitChange();
       break;
     case Constants.UPDATE_FORMULA:

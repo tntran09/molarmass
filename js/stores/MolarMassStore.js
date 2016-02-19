@@ -6,22 +6,27 @@ var molarmass = require('molarmass');
 
 var CHANGE_EVENT = 'change';
 
-var _activeCompound = {};
+var _activeCompound = {
+  formula: '',
+  mass: 0.0
+};
 var _compoundHistory = [];
 var _errorMessage = '';
 
 // ...private functions...
-function addToHistory (formula, mass) {
-  _compoundHistory.push({
-    formula: formula,
-    mass: mass
-  });
+function addToHistory () {
+  if (_activeCompound.formula) {
+    _compoundHistory.push({
+      formula: _activeCompound.formula,
+      mass: _activeCompound.mass
+    });
 
-  _activeCompound = {
-    formula: '',
-    mass: 0.0
-  };
-  _errorMessage = '';
+    _activeCompound = {
+      formula: '',
+      mass: 0.0
+    };
+    _errorMessage = '';
+  }
 }
 
 function update (formula) {
@@ -64,7 +69,7 @@ var MolarMassStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
   switch(action.actionType) {
     case Constants.ADD_TO_HISTORY:
-      addToHistory(action.formula, action.mass)
+      addToHistory()
       MolarMassStore.emitChange();
       break;
     case Constants.UPDATE_FORMULA:

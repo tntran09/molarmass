@@ -2,12 +2,8 @@ var React = require('react');
 var MolarMassActions = require('../actions/MolarMassActions');
 
 var InputSection = React.createClass({
-  // TODO: change name
-  _handleSubmitButtonClick: function() {
-    MolarMassActions.addToHistory(this.state.formula, this.state.mass);
-  },
-
   _onSubmit: function (event) {
+    MolarMassActions.addCurrentCompoundToHistory();
     event.preventDefault();
   },
 
@@ -24,9 +20,9 @@ var InputSection = React.createClass({
           <div className="pure-u-1-1 pure-u-sm-3-4">
             <form className="pure-form" onSubmit={this._onSubmit}>
               <fieldset>
-                <input type="text" name="formulaInput" className="pure-u-1-1 pure-u-sm-20-24" placeholder="Enter a chemical formula..." ref="formulaInput" onChange={this._onFormulaChange} />
+                <input type="text" name="formulaInput" className="pure-u-1-1 pure-u-sm-20-24" placeholder="Enter a chemical formula..." value={this.props.formula} ref="formulaInput" onChange={this._onFormulaChange} />
                 <span> </span>
-                <input type="submit" className="pure-button pure-u-1-1 pure-u-sm-2-24" value="+" onClick={this._handleSubmitButtonClick} />
+                <input type="submit" className="pure-button pure-u-1-1 pure-u-sm-2-24" value="+" />
               </fieldset>
             </form>
           </div>

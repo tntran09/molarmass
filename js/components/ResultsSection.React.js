@@ -7,7 +7,7 @@ var ResultsSection = React.createClass({
     return (
       <div id="resultsSection" className="pure-g">
         <ActiveCompoundSection formula={this.props.formula} mass={this.props.mass} />
-        <HistorySection />
+        <HistorySection history={this.props.history} />
       </div>
     );
   }
