@@ -18,12 +18,7 @@ function getAppState() {
 
 var MolarMassApp = React.createClass({
   getInitialState: function () {
-    return {
-      formula: '',
-      history: [],
-      mass: 0.0,
-      errorMessage: ''
-    }
+    return getAppState();
   },
 
   componentDidMount: function() {

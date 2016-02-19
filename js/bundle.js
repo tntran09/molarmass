@@ -433,11 +433,11 @@ var ActiveCompoundSection = React.createClass({
 
     return React.createElement(
       'div',
-      { id: 'activeCompoundSection', className: 'pure-u-1-2' },
+      { id: 'activeCompoundSection', className: 'pure-u-1-1 pure-u-md-1-2' },
       React.createElement('div', { className: 'pure-u-1-24' }),
       React.createElement(
         'div',
-        { className: 'pure-u-23-24' },
+        { className: 'pure-u-22-24' },
         React.createElement('h1', { className: 'chemicalText', dangerouslySetInnerHTML: formulaAsHTML }),
         React.createElement(
           'p',
@@ -550,37 +550,42 @@ var HistorySection = React.createClass({
 
     return React.createElement(
       "div",
-      { id: "historySection", className: "pure-u-1-2" },
+      { id: "historySection", className: "pure-u-1-1 pure-u-md-1-2" },
+      React.createElement("div", { className: "pure-u-1-24" }),
       React.createElement(
-        "h3",
-        null,
-        "History"
-      ),
-      React.createElement(
-        "table",
-        { className: "pure-table" },
+        "div",
+        { className: "pure-u-22-24" },
         React.createElement(
-          "thead",
+          "h3",
           null,
-          React.createElement(
-            "tr",
-            null,
-            React.createElement(
-              "th",
-              null,
-              "Formula"
-            ),
-            React.createElement(
-              "th",
-              null,
-              "Mass (g/mol)"
-            )
-          )
+          "History"
         ),
         React.createElement(
-          "tbody",
-          null,
-          tbody
+          "table",
+          { className: "pure-table" },
+          React.createElement(
+            "thead",
+            null,
+            React.createElement(
+              "tr",
+              null,
+              React.createElement(
+                "th",
+                null,
+                "Formula"
+              ),
+              React.createElement(
+                "th",
+                null,
+                "Mass (g/mol)"
+              )
+            )
+          ),
+          React.createElement(
+            "tbody",
+            null,
+            tbody
+          )
         )
       )
     );
@@ -671,12 +676,7 @@ var MolarMassApp = React.createClass({
   displayName: 'MolarMassApp',
 
   getInitialState: function () {
-    return {
-      formula: '',
-      history: [],
-      mass: 0.0,
-      errorMessage: ''
-    };
+    return getAppState();
   },
 
   componentDidMount: function () {
@@ -753,9 +753,8 @@ var _activeCompound = {
 var _compoundHistory = [];
 var _errorMessage = '';
 
-// ...private functions...
 function addToHistory() {
-  if (_activeCompound.formula) {
+  if (_activeCompound.mass > 0) {
     _compoundHistory.push({
       formula: _activeCompound.formula,
       mass: _activeCompound.mass

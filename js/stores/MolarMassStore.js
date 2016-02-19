@@ -13,9 +13,8 @@ var _activeCompound = {
 var _compoundHistory = [];
 var _errorMessage = '';
 
-// ...private functions...
 function addToHistory () {
-  if (_activeCompound.formula) {
+  if (_activeCompound.mass > 0) {
     _compoundHistory.push({
       formula: _activeCompound.formula,
       mass: _activeCompound.mass
