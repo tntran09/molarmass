@@ -223,8 +223,8 @@ describe('compound', function () {
         it('should parse (Fe2)O3', function () {
             var cmpd = new Compound('(Fe2)O3');
 
-            var Fe = table.get('Fe');
             var O = table.get('O');
+            var Fe = table.get('Fe');
 
             assert.deepEqual(O, cmpd.elements[0].element);
             assert.equal(3, cmpd.elements[0].quantity);
@@ -233,6 +233,29 @@ describe('compound', function () {
             assert.equal(2, cmpd.elements[1].quantity);
 
             assert.equal(159.7, cmpd.molarMass);
+        });
+
+        it('should parse the molar mass of a complex compound', function () {
+          var cmpd = new Compound('CH3(CH2)10C(=O)NH(CH2)3[N+](CH3)(CH3)CH2C([O-])=O');
+
+          var H = table.get('H');
+          var C = table.get('C');
+          var N = table.get('N');
+          var O = table.get('O');
+
+          assert.deepEqual(H, cmpd.elements[0].element);
+          assert.equal(38, cmpd.elements[0].quantity);
+
+          assert.deepEqual(C, cmpd.elements[1].element);
+          assert.equal(19, cmpd.elements[1].quantity);
+
+          assert.deepEqual(N, cmpd.elements[2].element);
+          assert.equal(2, cmpd.elements[2].quantity);
+
+          assert.deepEqual(O, cmpd.elements[3].element);
+          assert.equal(3, cmpd.elements[3].quantity);
+
+          assert.equal(342.5232, cmpd.molarMass);
         });
 
         it('should parse 0 as zero quantity on an element', function () {
@@ -260,6 +283,22 @@ describe('compound', function () {
 
             assert.equal(0, cmpd.molarMass);
         });
+
+        it('should treat square brackets the same as parenthases');
+        it('should allow and ignore underscore characters');
+        it('should allow and ignore the equal sign (=)');
+        it('should allow and ignore the period character (.)');
+        it('should allow and ignore white spaces');
+        it('should allow and ignore +/- characters', function () {
+            var cmpd = new Compound('Cl-');
+
+            var Cl = table.get('Cl');
+
+            assert.deepEqual(Cl, cmpd.elements[0].element);
+            assert.equal(1, cmpd.elements[0].quantity);
+
+            assert.equal(35.453, cmpd.molarMass);
+        })
     });
 
     describe('compounds with unknown elements', function () {
@@ -301,14 +340,6 @@ describe('compound', function () {
             it('should fail when starting with close parentheses', function () {
                 assert.throws(function () {
                     var c = new Compound(')He');
-                });
-            });
-        });
-
-        describe('failures after lowercase', function () {
-            it('should fail when followed by lowercase', function () {
-                assert.throws(function () {
-                    var c = new Compound('Argon');
                 });
             });
         });
@@ -356,12 +387,9 @@ describe('compound', function () {
         });
 
         describe('failures containing special characters', function () {
-            it('should fail when containing any non-numeric, non-alphabetic characters or parentheses', function () {
+            it('should fail when containing any invalid characters', function () {
                 assert.throws(function () {
-                    var c = new Compound('Cl-');
-                });
-                assert.throws(function () {
-                    var c = new Compound('Ag2+');
+                    var c = new Compound('Cl^2');
                 });
             });
         });
