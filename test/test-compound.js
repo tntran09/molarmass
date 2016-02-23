@@ -285,7 +285,24 @@ describe('compound', function () {
         });
 
         it('should treat square brackets the same as parenthases');
-        it('should allow and ignore underscore characters');
+        it('should allow and ignore underscore characters', function () {
+          var cmpd = new Compound('(CH_3)_2CHOH');
+
+          var H = table.get('H');
+          var C = table.get('C');
+          var O = table.get('O');
+
+          assert.deepEqual(H, cmpd.elements[0].element);
+          assert.equal(8, cmpd.elements[0].quantity);
+
+          assert.deepEqual(C, cmpd.elements[1].element);
+          assert.equal(3, cmpd.elements[1].quantity);
+
+          assert.deepEqual(O, cmpd.elements[2].element);
+          assert.equal(1, cmpd.elements[2].quantity);
+
+          assert.equal(60.0962, cmpd.molarMass);
+        });
         it('should allow and ignore the equal sign (=)');
         it('should allow and ignore the period character (.)');
         it('should allow and ignore white spaces');
