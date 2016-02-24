@@ -37,6 +37,22 @@ describe('molarmass', function () {
         assert.equal(159.7, molarmass('(Fe2)O3'));
         assert.equal(0, molarmass('H0'));
         assert.equal(0, molarmass('(OH)0'));
+    });
+
+    it('should return an instance of Compound when the options is set', function () {
+      var table = require('../lib/table');
+
+      var OH = molarmass('OH', { returnCompound: true });
+      var H = table.get('H');
+      var O = table.get('O');
+
+      assert.deepEqual(H, OH.elements[0].element);
+      assert.equal(1, OH.elements[1].quantity);
+
+      assert.deepEqual(O, OH.elements[1].element);
+      assert.equal(1, OH.elements[0].quantity);
+
+      assert.equal(17.0079, OH.molarMass);
     })
 });
 
