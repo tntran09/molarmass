@@ -284,37 +284,126 @@ describe('compound', function () {
             assert.equal(0, cmpd.molarMass);
         });
 
-        it('should treat square brackets the same as parenthases');
+        it('should treat square brackets the same as parenthases', function () {
+            var cmpd = new Compound('NH4[Cr(SCN)4(NH3)2]');
+
+            var H = table.get('H');
+            var C = table.get('C');
+            var N = table.get('N');
+            var S = table.get('S');
+            var Cr = table.get('Cr');
+
+            assert.deepEqual(H, cmpd.elements[0].element);
+            assert.equal(10, cmpd.elements[0].quantity);
+
+            assert.deepEqual(C, cmpd.elements[1].element);
+            assert.equal(4, cmpd.elements[1].quantity);
+
+            assert.deepEqual(N, cmpd.elements[2].element);
+            assert.equal(7, cmpd.elements[2].quantity);
+
+            assert.deepEqual(S, cmpd.elements[3].element);
+            assert.equal(4, cmpd.elements[3].quantity);
+
+            assert.deepEqual(Cr, cmpd.elements[4].element);
+            assert.equal(1, cmpd.elements[4].quantity);
+
+            // TODO: fix precision
+            assert.equal(336.412, cmpd.molarMass.toFixed(3));
+        });
         it('should allow and ignore underscore characters', function () {
-          var cmpd = new Compound('(CH_3)_2CHOH');
+            var cmpd = new Compound('(CH_3)_2CHOH');
+
+            var H = table.get('H');
+            var C = table.get('C');
+            var O = table.get('O');
+
+            assert.deepEqual(H, cmpd.elements[0].element);
+            assert.equal(8, cmpd.elements[0].quantity);
+
+            assert.deepEqual(C, cmpd.elements[1].element);
+            assert.equal(3, cmpd.elements[1].quantity);
+
+            assert.deepEqual(O, cmpd.elements[2].element);
+            assert.equal(1, cmpd.elements[2].quantity);
+
+            assert.equal(60.0962, cmpd.molarMass);
+        });
+        it('should allow and ignore the equal sign (=)', function () {
+          var cmpd = new Compound('CH3CH2C(=O)OH');
 
           var H = table.get('H');
           var C = table.get('C');
           var O = table.get('O');
 
           assert.deepEqual(H, cmpd.elements[0].element);
-          assert.equal(8, cmpd.elements[0].quantity);
+          assert.equal(6, cmpd.elements[0].quantity);
 
           assert.deepEqual(C, cmpd.elements[1].element);
           assert.equal(3, cmpd.elements[1].quantity);
 
           assert.deepEqual(O, cmpd.elements[2].element);
-          assert.equal(1, cmpd.elements[2].quantity);
+          assert.equal(2, cmpd.elements[2].quantity);
 
-          assert.equal(60.0962, cmpd.molarMass);
+          assert.equal(74.0804, cmpd.molarMass);
         });
-        it('should allow and ignore the equal sign (=)');
-        it('should allow and ignore the period character (.)');
-        it('should allow and ignore white spaces');
+        it('should allow and ignore the period character (.)',  function () {
+            var cmpd = new Compound('AlAsO4.(H2O)8');
+
+            var H = table.get('H');
+            var O = table.get('O');
+            var Al = table.get('Al');
+            var As = table.get('As');
+
+            assert.deepEqual(H, cmpd.elements[0].element);
+            assert.equal(16, cmpd.elements[0].quantity);
+
+            assert.deepEqual(O, cmpd.elements[1].element);
+            assert.equal(12, cmpd.elements[1].quantity);
+
+            assert.deepEqual(Al, cmpd.elements[2].element);
+            assert.equal(1, cmpd.elements[2].quantity);
+
+            assert.deepEqual(As, cmpd.elements[3].element);
+            assert.equal(1, cmpd.elements[3].quantity);
+
+            // TODO: fix precision
+            assert.equal(310.0264, cmpd.molarMass.toFixed(4));
+        });
+        it('should allow and ignore white spaces', function () {
+            var cmpd = new Compound('CH3 CO O H');
+
+            var H = table.get('H');
+            var C = table.get('C');
+            var O = table.get('O');
+
+            assert.deepEqual(H, cmpd.elements[0].element);
+            assert.equal(4, cmpd.elements[0].quantity);
+
+            assert.deepEqual(C, cmpd.elements[1].element);
+            assert.equal(2, cmpd.elements[1].quantity);
+
+            assert.deepEqual(O, cmpd.elements[2].element);
+            assert.equal(2, cmpd.elements[2].quantity);
+
+            assert.equal(60.0536, cmpd.molarMass);
+        });
         it('should allow and ignore +/- characters', function () {
             var cmpd = new Compound('Cl-');
+            var cmpd2 = new Compound('Na+');
 
             var Cl = table.get('Cl');
+            var Na = table.get('Na');
 
             assert.deepEqual(Cl, cmpd.elements[0].element);
             assert.equal(1, cmpd.elements[0].quantity);
 
             assert.equal(35.453, cmpd.molarMass);
+
+            assert.deepEqual(Na, cmpd2.elements[0].element);
+            assert.equal(1, cmpd2.elements[0].quantity);
+
+            assert.equal(22.99, cmpd2.molarMass);
         })
     });
 
