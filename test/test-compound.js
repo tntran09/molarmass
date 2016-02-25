@@ -25,14 +25,14 @@ describe('compound', function () {
                 name: 'Hydrogen',
                 symbol: 'H',
                 atomicNumber: 1,
-                mass: 1.0079
+                mass: 1.00794
             };
 
             var H = new Compound('H');
 
             assert.deepEqual(Hydrogen, H.elements[0].element);
             assert.equal(1, H.elements[0].quantity);
-            assert.equal(1.0079, H.molarMass);
+            assert.equal(1.00794, H.molarMass);
         });
 
         it('should parse OH', function () {
@@ -45,7 +45,7 @@ describe('compound', function () {
             assert.deepEqual(O, OH.elements[1].element);
             assert.equal(1, OH.elements[0].quantity);
             assert.equal(1, OH.elements[1].quantity);
-            assert.equal(17.0079, OH.molarMass);
+            assert.equal(17.00734, OH.molarMass);
         });
 
         it('should parse H2', function () {
@@ -55,7 +55,7 @@ describe('compound', function () {
 
             assert.deepEqual(H, H2.elements[0].element);
             assert.equal(2, H2.elements[0].quantity);
-            assert.equal(2.0158, H2.molarMass);
+            assert.equal(2.01588, H2.molarMass);
         });
 
         it('should parse (S8)', function () {
@@ -66,7 +66,7 @@ describe('compound', function () {
             assert.deepEqual(S, S8.elements[0].element);
             assert.equal(8, S8.elements[0].quantity);
 
-            assert.equal(256.48, S8.molarMass);
+            assert.equal(256.52, S8.molarMass);
         });
 
         it('should parse H2O', function () {
@@ -81,7 +81,7 @@ describe('compound', function () {
             assert.deepEqual(O, H2O.elements[1].element);
             assert.equal(1, H2O.elements[1].quantity);
 
-            assert.equal(18.0158, H2O.molarMass);
+            assert.equal(18.01528, H2O.molarMass);
         });
 
         it('should parse C12H22O11', function () {
@@ -100,7 +100,7 @@ describe('compound', function () {
             assert.deepEqual(O, C12H22O11.elements[2].element);
             assert.equal(11, C12H22O11.elements[2].quantity);
 
-            assert.equal(342.3058, C12H22O11.molarMass);
+            assert.equal(342.29648, C12H22O11.molarMass);
         });
 
         it('should parse H(CO)(CHOH)5H', function () {
@@ -119,7 +119,7 @@ describe('compound', function () {
           assert.deepEqual(O, cmpd.elements[2].element);
           assert.equal(6, cmpd.elements[2].quantity);
 
-          assert.equal(180.1608, cmpd.molarMass);
+          assert.equal(180.15588, cmpd.molarMass);
         })
 
         it('should parse Na', function () {
@@ -127,14 +127,14 @@ describe('compound', function () {
                 name: 'Sodium',
                 symbol: 'Na',
                 atomicNumber: 11,
-                mass: 22.99
+                mass: 22.98977
             };
 
             var Na = new Compound('Na');
 
             assert.deepEqual(Sodium, Na.elements[0].element);
             assert.equal(1, Na.elements[0].quantity);
-            assert.equal(22.99, Na.molarMass);
+            assert.equal(22.98977, Na.molarMass);
         });
 
         it('should parse NaOH', function () {
@@ -153,7 +153,7 @@ describe('compound', function () {
             assert.deepEqual(Na, NaOH.elements[2].element);
             assert.equal(1, NaOH.elements[2].quantity);
 
-            assert.equal(39.9979, NaOH.molarMass);
+            assert.equal(39.99711, NaOH.molarMass);
         });
 
         it('should parse Cr2O7', function () {
@@ -168,7 +168,7 @@ describe('compound', function () {
             assert.deepEqual(Cr, Cr2O7.elements[1].element);
             assert.equal(2, Cr2O7.elements[1].quantity);
 
-            assert.equal(216.0, Cr2O7.molarMass);
+            assert.equal(215.988, Cr2O7.molarMass);
         });
 
         it('should parse Ca(OH)2', function () {
@@ -187,7 +187,7 @@ describe('compound', function () {
             assert.deepEqual(Ca, cmpd.elements[2].element);
             assert.equal(1, cmpd.elements[2].quantity);
 
-            assert.equal(74.0958, cmpd.molarMass);
+            assert.equal(74.09268, cmpd.molarMass);
         });
 
         it('should parse Mg3(PO4)2', function () {
@@ -206,7 +206,7 @@ describe('compound', function () {
             assert.deepEqual(P, cmpd.elements[2].element);
             assert.equal(2, cmpd.elements[2].quantity);
 
-            assert.equal(262.848, cmpd.molarMass)
+            assert.equal(262.857722, cmpd.molarMass)
         });
 
         it('should parse ((((Pt)7)5))', function () {
@@ -217,7 +217,7 @@ describe('compound', function () {
             assert.deepEqual(Pt, cmpd.elements[0].element);
             assert.equal(35, cmpd.elements[0].quantity);
 
-            assert.equal(6827.8, cmpd.molarMass);
+            assert.equal(6827.73, cmpd.molarMass);
         });
 
         it('should parse (Fe2)O3', function () {
@@ -232,7 +232,7 @@ describe('compound', function () {
             assert.deepEqual(Fe, cmpd.elements[1].element);
             assert.equal(2, cmpd.elements[1].quantity);
 
-            assert.equal(159.7, cmpd.molarMass);
+            assert.equal(159.6882, cmpd.molarMass);
         });
 
         it('should parse the molar mass of a complex compound', function () {
@@ -255,7 +255,7 @@ describe('compound', function () {
           assert.deepEqual(O, cmpd.elements[3].element);
           assert.equal(3, cmpd.elements[3].quantity);
 
-          assert.equal(342.5232, cmpd.molarMass);
+          assert.equal(342.51662, cmpd.molarMass);
         });
 
         it('should parse 0 as zero quantity on an element', function () {
@@ -308,9 +308,9 @@ describe('compound', function () {
             assert.deepEqual(Cr, cmpd.elements[4].element);
             assert.equal(1, cmpd.elements[4].quantity);
 
-            // TODO: fix precision
-            assert.equal(336.412, cmpd.molarMass.toFixed(3));
+            assert.equal(336.4252, cmpd.molarMass);
         });
+
         it('should allow and ignore underscore characters', function () {
             var cmpd = new Compound('(CH_3)_2CHOH');
 
@@ -327,7 +327,7 @@ describe('compound', function () {
             assert.deepEqual(O, cmpd.elements[2].element);
             assert.equal(1, cmpd.elements[2].quantity);
 
-            assert.equal(60.0962, cmpd.molarMass);
+            assert.equal(60.09502, cmpd.molarMass);
         });
         it('should allow and ignore the equal sign (=)', function () {
           var cmpd = new Compound('CH3CH2C(=O)OH');
@@ -345,8 +345,9 @@ describe('compound', function () {
           assert.deepEqual(O, cmpd.elements[2].element);
           assert.equal(2, cmpd.elements[2].quantity);
 
-          assert.equal(74.0804, cmpd.molarMass);
+          assert.equal(74.07854, cmpd.molarMass);
         });
+
         it('should allow and ignore the period character (.)',  function () {
             var cmpd = new Compound('AlAsO4.(H2O)8');
 
@@ -367,9 +368,9 @@ describe('compound', function () {
             assert.deepEqual(As, cmpd.elements[3].element);
             assert.equal(1, cmpd.elements[3].quantity);
 
-            // TODO: fix precision
-            assert.equal(310.0264, cmpd.molarMass.toFixed(4));
+            assert.equal(310.022978, cmpd.molarMass);
         });
+
         it('should allow and ignore white spaces', function () {
             var cmpd = new Compound('CH3 CO O H');
 
@@ -386,8 +387,9 @@ describe('compound', function () {
             assert.deepEqual(O, cmpd.elements[2].element);
             assert.equal(2, cmpd.elements[2].quantity);
 
-            assert.equal(60.0536, cmpd.molarMass);
+            assert.equal(60.05196, cmpd.molarMass);
         });
+
         it('should allow and ignore +/- characters', function () {
             var cmpd = new Compound('Cl-');
             var cmpd2 = new Compound('Na+');
@@ -403,8 +405,8 @@ describe('compound', function () {
             assert.deepEqual(Na, cmpd2.elements[0].element);
             assert.equal(1, cmpd2.elements[0].quantity);
 
-            assert.equal(22.99, cmpd2.molarMass);
-        })
+            assert.equal(22.98977, cmpd2.molarMass);
+        });
     });
 
     describe('compounds with unknown elements', function () {
@@ -425,7 +427,7 @@ describe('compound', function () {
             assert.deepEqual(H, cmpd.elements[1].element);
             assert.equal(1, cmpd.elements[1].quantity);
 
-            assert.equal(1.0079, cmpd.molarMass);
+            assert.equal(1.00794, cmpd.molarMass);
         })
     });
 
