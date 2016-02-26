@@ -5,35 +5,32 @@ var assign = require('object-assign');
 var molarmass = require('molarmass');
 
 var CHANGE_EVENT = 'change';
+var EMPTY_COMPOUND = molarmass('', { returnCompound: true });
 
-var _activeCompound = {
-  formula: '',
-  mass: 0.0
-};
+var _formulaInput = '';
+var _activeCompound = EMPTY_COMPOUND;
 var _compoundHistory = [];
 var _errorMessage = '';
 
 function addToHistory () {
-  if (_activeCompound.mass > 0) {
+  if (_activeCompound.molarMass > 0) {
     _compoundHistory.push({
       formula: _activeCompound.formula,
-      mass: _activeCompound.mass
+      mass: _activeCompound.molarMass
     });
 
-    _activeCompound = {
-      formula: '',
-      mass: 0.0
-    };
+    _formulaInput = '';
+    _activeCompound = EMPTY_COMPOUND;
     _errorMessage = '';
   }
 }
 
 function update (formula) {
-  _activeCompound.formula = formula;
-  _activeCompound.mass = 0.0;
+  _activeCompound = EMPTY_COMPOUND
+  _formulaInput = formula;
 
   try {
-    _activeCompound.mass = molarmass(formula);
+    _activeCompound = molarmass(formula, { returnCompound: true });
     _errorMessage = '';
   }
   catch (e) {
@@ -42,6 +39,10 @@ function update (formula) {
 }
 
 var MolarMassStore = assign({}, EventEmitter.prototype, {
+  getFormulaInputValue: function () {
+    return _formulaInput;
+  },
+
   getActiveCompound: function () {
     return _activeCompound;
   },
@@ -68,7 +69,7 @@ var MolarMassStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
   switch(action.actionType) {
     case Constants.ADD_TO_HISTORY:
-      addToHistory()
+      addToHistory();
       MolarMassStore.emitChange();
       break;
     case Constants.UPDATE_FORMULA:

@@ -18,7 +18,7 @@ var HistorySection = React.createClass({
 
     for (var key in compounds) {
       var item = compounds[key];
-      rows.push(this._buildTableRow(key, item.formula, item.mass))
+      rows.push(this._buildTableRow(key, item.formula, item.mass));
     }
 
     return rows;

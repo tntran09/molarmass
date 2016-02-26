@@ -6,7 +6,7 @@ var HeaderSection = React.createClass({
       <div id="headerSection" className="pure-g">
         <div className="pure-u-1-12"></div>
         <div className="pure-u-11-12">
-          <h1>Molar Mass</h1>
+          <h2>Molar Mass</h2>
         </div>
       </div>
     );

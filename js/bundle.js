@@ -426,10 +426,82 @@ var React = require('react');
 var ActiveCompoundSection = React.createClass({
   displayName: 'ActiveCompoundSection',
 
+  _buildElementTableRow: function (key, elementItem) {
+    var subtotal = elementItem.element.mass * elementItem.quantity;
+    subtotal = Math.round(subtotal * 1000000) / 1000000;
+
+    return React.createElement(
+      'tr',
+      { key: key },
+      React.createElement(
+        'td',
+        null,
+        elementItem.element.symbol
+      ),
+      React.createElement(
+        'td',
+        null,
+        elementItem.element.mass
+      ),
+      React.createElement(
+        'td',
+        null,
+        elementItem.quantity
+      ),
+      React.createElement(
+        'td',
+        null,
+        subtotal
+      )
+    );
+  },
+
+  _buildElementTableBody: function (compound) {
+    var rows = [];
+    var formulaAsHTML = {
+      __html: compound.formula.replace(/[0-9]+/g, '<sub>$&</sub>').replace(/[\+\-]+/g, '<sup>$&</sup>')
+    };
+
+    for (var key in compound.elements) {
+      var item = compound.elements[key];
+      rows.push(this._buildElementTableRow(key, item));
+    }
+    if (compound.elements.length > 1) {
+      rows.push(React.createElement(
+        'tr',
+        { key: compound.elements.length },
+        React.createElement(
+          'td',
+          null,
+          React.createElement('b', { dangerouslySetInnerHTML: formulaAsHTML })
+        ),
+        React.createElement(
+          'td',
+          null,
+          compound.molarMass
+        ),
+        React.createElement(
+          'td',
+          null,
+          '1'
+        ),
+        React.createElement(
+          'td',
+          null,
+          compound.molarMass
+        )
+      ));
+    }
+
+    return rows;
+  },
+
   render: function () {
     var formulaAsHTML = {
-      __html: this.props.formula.replace(/[0-9]+/g, '<sub>$&</sub>')
+      __html: this.props.compound.formula.replace(/[0-9]+/g, '<sub>$&</sub>').replace(/[\+\-]+/g, '<sup>$&</sup>')
     };
+
+    var tbody = this._buildElementTableBody(this.props.compound);
 
     return React.createElement(
       'div',
@@ -437,17 +509,17 @@ var ActiveCompoundSection = React.createClass({
       React.createElement('div', { className: 'pure-u-1-24' }),
       React.createElement(
         'div',
-        { className: 'pure-u-22-24', hidden: this.props.formula.length == 0 },
-        React.createElement('h1', { className: 'chemicalText', style: { height: '1em' }, dangerouslySetInnerHTML: formulaAsHTML }),
+        { className: 'pure-u-22-24', hidden: this.props.compound.formula.length == 0 },
+        React.createElement('h2', { className: 'chemicalText pure-u-1-1 hidden', style: { height: '1em' }, dangerouslySetInnerHTML: formulaAsHTML }),
         React.createElement(
           'p',
-          null,
+          { className: 'pure-u-1-1 hidden' },
           'Molar Mass: ',
-          this.props.mass
+          this.props.compound.molarMass
         ),
         React.createElement(
           'table',
-          { className: 'pure-table hidden' },
+          { className: 'pure-table' },
           React.createElement(
             'thead',
             null,
@@ -476,7 +548,11 @@ var ActiveCompoundSection = React.createClass({
               )
             )
           ),
-          React.createElement('tbody', null)
+          React.createElement(
+            'tbody',
+            null,
+            tbody
+          )
         )
       )
     );
@@ -500,7 +576,7 @@ var HeaderSection = React.createClass({
         "div",
         { className: "pure-u-11-12" },
         React.createElement(
-          "h1",
+          "h2",
           null,
           "Molar Mass"
         )
@@ -668,12 +744,9 @@ var InputSection = require('./InputSection.React');
 var ResultsSection = require('./ResultsSection.React');
 
 function getAppState() {
-  var compound = MolarMassStore.getActiveCompound();
-
   return {
-    formula: compound.formula,
-    mass: compound.mass,
-    // ...elements
+    formula: MolarMassStore.getFormulaInputValue(),
+    compound: MolarMassStore.getActiveCompound(),
     history: MolarMassStore.getHistory(),
     errorMessage: MolarMassStore.getError()
   };
@@ -704,7 +777,7 @@ var MolarMassApp = React.createClass({
       { id: 'molarMassApp' },
       React.createElement(HeaderSection, null),
       React.createElement(InputSection, { formula: this.state.formula, errorMessage: this.state.errorMessage }),
-      React.createElement(ResultsSection, { formula: this.state.formula, mass: this.state.mass, history: this.state.history })
+      React.createElement(ResultsSection, { compound: this.state.compound, history: this.state.history })
     );
   }
 });
@@ -723,7 +796,7 @@ var ResultsSection = React.createClass({
     return React.createElement(
       'div',
       { id: 'resultsSection', className: 'pure-g' },
-      React.createElement(ActiveCompoundSection, { formula: this.props.formula, mass: this.props.mass }),
+      React.createElement(ActiveCompoundSection, { compound: this.props.compound }),
       React.createElement(HistorySection, { history: this.props.history })
     );
   }
@@ -752,35 +825,32 @@ var assign = require('object-assign');
 var molarmass = require('molarmass');
 
 var CHANGE_EVENT = 'change';
+var EMPTY_COMPOUND = molarmass('', { returnCompound: true });
 
-var _activeCompound = {
-  formula: '',
-  mass: 0.0
-};
+var _formulaInput = '';
+var _activeCompound = EMPTY_COMPOUND;
 var _compoundHistory = [];
 var _errorMessage = '';
 
 function addToHistory() {
-  if (_activeCompound.mass > 0) {
+  if (_activeCompound.molarMass > 0) {
     _compoundHistory.push({
       formula: _activeCompound.formula,
-      mass: _activeCompound.mass
+      mass: _activeCompound.molarMass
     });
 
-    _activeCompound = {
-      formula: '',
-      mass: 0.0
-    };
+    _formulaInput = '';
+    _activeCompound = EMPTY_COMPOUND;
     _errorMessage = '';
   }
 }
 
 function update(formula) {
-  _activeCompound.formula = formula;
-  _activeCompound.mass = 0.0;
+  _activeCompound = EMPTY_COMPOUND;
+  _formulaInput = formula;
 
   try {
-    _activeCompound.mass = molarmass(formula);
+    _activeCompound = molarmass(formula, { returnCompound: true });
     _errorMessage = '';
   } catch (e) {
     _errorMessage = e.message;
@@ -788,6 +858,10 @@ function update(formula) {
 }
 
 var MolarMassStore = assign({}, EventEmitter.prototype, {
+  getFormulaInputValue: function () {
+    return _formulaInput;
+  },
+
   getActiveCompound: function () {
     return _activeCompound;
   },

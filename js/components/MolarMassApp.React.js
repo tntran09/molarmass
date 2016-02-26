@@ -5,12 +5,9 @@ var InputSection = require('./InputSection.React');
 var ResultsSection = require('./ResultsSection.React');
 
 function getAppState() {
-  var compound = MolarMassStore.getActiveCompound();
-
   return {
-    formula: compound.formula,
-    mass: compound.mass,
-    // ...elements
+    formula: MolarMassStore.getFormulaInputValue(),
+    compound: MolarMassStore.getActiveCompound(),
     history: MolarMassStore.getHistory(),
     errorMessage: MolarMassStore.getError()
   };
@@ -38,7 +35,7 @@ var MolarMassApp = React.createClass({
       <div id="molarMassApp">
         <HeaderSection />
         <InputSection formula={this.state.formula} errorMessage={this.state.errorMessage} />
-        <ResultsSection formula={this.state.formula} mass={this.state.mass} history={this.state.history} />
+        <ResultsSection compound={this.state.compound} history={this.state.history} />
       </div>
     );
   }
