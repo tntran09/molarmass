@@ -32,7 +32,7 @@
     "bootstrap": "^3.3.6",
     "flux": "^2.1.1",
     "font-awesome": "^4.5.0",
-    "molarmass": "^0.1.7",
+    "molarmass": "^0.2.0",
     "object-assign": "^4.0.1",
     "purecss": "^0.6.0",
     "react": "^0.14.7",
