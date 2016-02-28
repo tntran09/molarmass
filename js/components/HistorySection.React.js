@@ -1,27 +1,36 @@
 var React = require('react');
+var MolarMassActions = require('../actions/MolarMassActions');
 
 var HistorySection = React.createClass({
-  _buildTableRow: function (key, formula, mass) {
+  _buildTableRow: function (index, formula, mass) {
     return (
-      <tr key={key}>
-        <td>{formula}</td>
+      <tr key={index}>
+        <td onClick={this._autoFillInput}>{formula}</td>
         <td>{mass}</td>
         <td>
-          <i className="fa fa-trash"></i>
+          <i className="fa fa-trash" onClick={this._deleteHistoryItem.bind(this, index)}></i>
         </td>
       </tr>
     );
   },
 
-  _buildTableBody: function (compounds) {
+  _buildTableBody: function (historyItems) {
     var rows = [];
 
-    for (var key in compounds) {
-      var item = compounds[key];
+    for (var key in historyItems) {
+      var item = historyItems[key];
       rows.push(this._buildTableRow(key, item.formula, item.mass));
     }
 
     return rows;
+  },
+
+  _autoFillInput: function (event) {
+    MolarMassActions.update(event.target.innerText);
+  },
+
+  _deleteHistoryItem: function (index, event) {
+    MolarMassActions.delete(index)
   },
 
   render: function () {

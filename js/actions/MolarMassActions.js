@@ -8,6 +8,13 @@ var MolarMassActions = {
     })
   },
 
+  delete: function (index) {
+    AppDispatcher.dispatch({
+      actionType: Constants.DELETE_HISTORY_ITEM,
+      index: index
+    });
+  },
+
   update: function (formula) {
     AppDispatcher.dispatch({
       actionType: Constants.UPDATE_FORMULA,

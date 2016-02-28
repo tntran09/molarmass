@@ -21,20 +21,25 @@ var ActiveCompoundSection = React.createClass({
       __html: compound.formula.replace(/[0-9]+/g, '<sub>$&</sub>').replace(/[\+\-]+/g, '<sup>$&</sup>')
     };
 
-    for(var key in compound.elements) {
-      var item = compound.elements[key];
-      rows.push(this._buildElementTableRow(key, item));
+    var showAllElements = compound.elements.length > 1 || compound.elements.some(function (item) {
+      return item.quantity > 1;
+    });
+
+    if (showAllElements) {
+      for(var key in compound.elements) {
+        var item = compound.elements[key];
+        rows.push(this._buildElementTableRow(key, item));
+      }
     }
-    if (compound.elements.length > 1) {
-      rows.push(
-        <tr key={compound.elements.length}>
-          <td><b dangerouslySetInnerHTML={formulaAsHTML}></b></td>
-          <td>{compound.molarMass}</td>
-          <td>1</td>
-          <td>{compound.molarMass}</td>
-        </tr>
-      );
-    }
+
+    rows.push(
+      <tr key={compound.elements.length}>
+        <td><b dangerouslySetInnerHTML={formulaAsHTML}></b></td>
+        <td>{compound.molarMass}</td>
+        <td>1</td>
+        <td>{compound.molarMass}</td>
+      </tr>
+    );
 
     return rows;
   },

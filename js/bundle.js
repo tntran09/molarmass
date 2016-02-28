@@ -402,6 +402,13 @@ var MolarMassActions = {
     });
   },
 
+  delete: function (index) {
+    AppDispatcher.dispatch({
+      actionType: Constants.DELETE_HISTORY_ITEM,
+      index: index
+    });
+  },
+
   update: function (formula) {
     AppDispatcher.dispatch({
       actionType: Constants.UPDATE_FORMULA,
@@ -462,36 +469,41 @@ var ActiveCompoundSection = React.createClass({
       __html: compound.formula.replace(/[0-9]+/g, '<sub>$&</sub>').replace(/[\+\-]+/g, '<sup>$&</sup>')
     };
 
-    for (var key in compound.elements) {
-      var item = compound.elements[key];
-      rows.push(this._buildElementTableRow(key, item));
+    var showAllElements = compound.elements.length > 1 || compound.elements.some(function (item) {
+      return item.quantity > 1;
+    });
+
+    if (showAllElements) {
+      for (var key in compound.elements) {
+        var item = compound.elements[key];
+        rows.push(this._buildElementTableRow(key, item));
+      }
     }
-    if (compound.elements.length > 1) {
-      rows.push(React.createElement(
-        'tr',
-        { key: compound.elements.length },
-        React.createElement(
-          'td',
-          null,
-          React.createElement('b', { dangerouslySetInnerHTML: formulaAsHTML })
-        ),
-        React.createElement(
-          'td',
-          null,
-          compound.molarMass
-        ),
-        React.createElement(
-          'td',
-          null,
-          '1'
-        ),
-        React.createElement(
-          'td',
-          null,
-          compound.molarMass
-        )
-      ));
-    }
+
+    rows.push(React.createElement(
+      'tr',
+      { key: compound.elements.length },
+      React.createElement(
+        'td',
+        null,
+        React.createElement('b', { dangerouslySetInnerHTML: formulaAsHTML })
+      ),
+      React.createElement(
+        'td',
+        null,
+        compound.molarMass
+      ),
+      React.createElement(
+        'td',
+        null,
+        '1'
+      ),
+      React.createElement(
+        'td',
+        null,
+        compound.molarMass
+      )
+    ));
 
     return rows;
   },
@@ -589,82 +601,91 @@ module.exports = HeaderSection;
 
 },{"react":178}],7:[function(require,module,exports){
 var React = require('react');
+var MolarMassActions = require('../actions/MolarMassActions');
 
 var HistorySection = React.createClass({
-  displayName: "HistorySection",
+  displayName: 'HistorySection',
 
-  _buildTableRow: function (key, formula, mass) {
+  _buildTableRow: function (index, formula, mass) {
     return React.createElement(
-      "tr",
-      { key: key },
+      'tr',
+      { key: index },
       React.createElement(
-        "td",
-        null,
+        'td',
+        { onClick: this._autoFillInput },
         formula
       ),
       React.createElement(
-        "td",
+        'td',
         null,
         mass
       ),
       React.createElement(
-        "td",
+        'td',
         null,
-        React.createElement("i", { className: "fa fa-trash" })
+        React.createElement('i', { className: 'fa fa-trash', onClick: this._deleteHistoryItem.bind(this, index) })
       )
     );
   },
 
-  _buildTableBody: function (compounds) {
+  _buildTableBody: function (historyItems) {
     var rows = [];
 
-    for (var key in compounds) {
-      var item = compounds[key];
+    for (var key in historyItems) {
+      var item = historyItems[key];
       rows.push(this._buildTableRow(key, item.formula, item.mass));
     }
 
     return rows;
   },
 
+  _autoFillInput: function (event) {
+    MolarMassActions.update(event.target.innerText);
+  },
+
+  _deleteHistoryItem: function (index, event) {
+    MolarMassActions.delete(index);
+  },
+
   render: function () {
     var tbody = this._buildTableBody(this.props.history);
 
     return React.createElement(
-      "div",
-      { id: "historySection", className: "pure-u-1-1 pure-u-md-1-2", hidden: this.props.history.length == 0 },
-      React.createElement("div", { className: "pure-u-1-24" }),
+      'div',
+      { id: 'historySection', className: 'pure-u-1-1 pure-u-md-1-2', hidden: this.props.history.length == 0 },
+      React.createElement('div', { className: 'pure-u-1-24' }),
       React.createElement(
-        "div",
-        { className: "pure-u-22-24" },
+        'div',
+        { className: 'pure-u-22-24' },
         React.createElement(
-          "h3",
+          'h3',
           null,
-          "History"
+          'History'
         ),
         React.createElement(
-          "table",
-          { className: "pure-table" },
+          'table',
+          { className: 'pure-table' },
           React.createElement(
-            "thead",
+            'thead',
             null,
             React.createElement(
-              "tr",
+              'tr',
               null,
               React.createElement(
-                "th",
+                'th',
                 null,
-                "Formula"
+                'Formula'
               ),
               React.createElement(
-                "th",
+                'th',
                 null,
-                "Mass (g/mol)"
+                'Mass (g/mol)'
               ),
-              React.createElement("th", null)
+              React.createElement('th', null)
             )
           ),
           React.createElement(
-            "tbody",
+            'tbody',
             null,
             tbody
           )
@@ -676,7 +697,7 @@ var HistorySection = React.createClass({
 
 module.exports = HistorySection;
 
-},{"react":178}],8:[function(require,module,exports){
+},{"../actions/MolarMassActions":3,"react":178}],8:[function(require,module,exports){
 var React = require('react');
 var MolarMassActions = require('../actions/MolarMassActions');
 
@@ -807,6 +828,7 @@ module.exports = ResultsSection;
 },{"./ActiveCompoundSection.React":5,"./HistorySection.React":7,"react":178}],11:[function(require,module,exports){
 module.exports = {
   ADD_TO_HISTORY: 'ADD_TO_HISTORY',
+  DELETE_HISTORY_ITEM: 'DELETE_HISTORY_ITEM',
   UPDATE_FORMULA: 'UPDATE_FORMULA'
 };
 
@@ -843,6 +865,11 @@ function addToHistory() {
     _activeCompound = EMPTY_COMPOUND;
     _errorMessage = '';
   }
+}
+
+function deleteHistoryItem(index) {
+  var temp = _compoundHistory;
+  _compoundHistory = [].concat(temp.splice(0, index)).concat(temp.splice(1));
 }
 
 function update(formula) {
@@ -889,6 +916,10 @@ AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case Constants.ADD_TO_HISTORY:
       addToHistory();
+      MolarMassStore.emitChange();
+      break;
+    case Constants.DELETE_HISTORY_ITEM:
+      deleteHistoryItem(action.index);
       MolarMassStore.emitChange();
       break;
     case Constants.UPDATE_FORMULA:

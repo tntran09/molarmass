@@ -25,6 +25,13 @@ function addToHistory () {
   }
 }
 
+function deleteHistoryItem(index) {
+  var temp = _compoundHistory;
+  _compoundHistory = []
+      .concat(temp.splice(0, index))
+      .concat(temp.splice(1));
+}
+
 function update (formula) {
   _activeCompound = EMPTY_COMPOUND
   _formulaInput = formula;
@@ -70,6 +77,10 @@ AppDispatcher.register(function (action) {
   switch(action.actionType) {
     case Constants.ADD_TO_HISTORY:
       addToHistory();
+      MolarMassStore.emitChange();
+      break;
+    case Constants.DELETE_HISTORY_ITEM:
+      deleteHistoryItem(action.index);
       MolarMassStore.emitChange();
       break;
     case Constants.UPDATE_FORMULA:
