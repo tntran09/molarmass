@@ -8,7 +8,7 @@ var HistorySection = React.createClass({
         <td onClick={this._autoFillInput}>{formula}</td>
         <td>{mass}</td>
         <td>
-          <i className="fa fa-trash" onClick={this._deleteHistoryItem.bind(this, index)}></i>
+          <a href="#"><i className="fa fa-trash" onClick={this._deleteHistoryItem.bind(this, index)}></i></a>
         </td>
       </tr>
     );
@@ -31,22 +31,23 @@ var HistorySection = React.createClass({
 
   _deleteHistoryItem: function (index, event) {
     MolarMassActions.delete(index)
+    event.preventDefault();
   },
 
   render: function () {
     var tbody = this._buildTableBody(this.props.history);
 
     return (
-      <div id="historySection" className="pure-u-1-1 pure-u-md-1-2" hidden={this.props.history.length == 0}>
+      <div id="historySection" className="pure-u-1-1 pure-u-md-1-2">
         <div className="pure-u-1-24"></div>
         <div className="pure-u-22-24">
-        <h3>History</h3>
+        <h4>History</h4>
           <table className="pure-table">
             <thead>
               <tr>
                 <th>Formula</th>
                 <th>Mass (g/mol)</th>
-                <th></th>
+                <th><i className="fa fa-trash"></i></th>
               </tr>
             </thead>
             <tbody>

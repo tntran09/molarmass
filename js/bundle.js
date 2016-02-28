@@ -623,7 +623,11 @@ var HistorySection = React.createClass({
       React.createElement(
         'td',
         null,
-        React.createElement('i', { className: 'fa fa-trash', onClick: this._deleteHistoryItem.bind(this, index) })
+        React.createElement(
+          'a',
+          { href: '#' },
+          React.createElement('i', { className: 'fa fa-trash', onClick: this._deleteHistoryItem.bind(this, index) })
+        )
       )
     );
   },
@@ -645,6 +649,7 @@ var HistorySection = React.createClass({
 
   _deleteHistoryItem: function (index, event) {
     MolarMassActions.delete(index);
+    event.preventDefault();
   },
 
   render: function () {
@@ -652,13 +657,13 @@ var HistorySection = React.createClass({
 
     return React.createElement(
       'div',
-      { id: 'historySection', className: 'pure-u-1-1 pure-u-md-1-2', hidden: this.props.history.length == 0 },
+      { id: 'historySection', className: 'pure-u-1-1 pure-u-md-1-2' },
       React.createElement('div', { className: 'pure-u-1-24' }),
       React.createElement(
         'div',
         { className: 'pure-u-22-24' },
         React.createElement(
-          'h3',
+          'h4',
           null,
           'History'
         ),
@@ -681,7 +686,11 @@ var HistorySection = React.createClass({
                 null,
                 'Mass (g/mol)'
               ),
-              React.createElement('th', null)
+              React.createElement(
+                'th',
+                null,
+                React.createElement('i', { className: 'fa fa-trash' })
+              )
             )
           ),
           React.createElement(
