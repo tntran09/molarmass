@@ -52,7 +52,7 @@ var ActiveCompoundSection = React.createClass({
     var tbody = this._buildElementTableBody(this.props.compound);
 
     return (
-      <div id="activeCompoundSection" className="pure-u-1-1 pure-u-md-1-2">
+      <div id="activeCompoundSection" className="pure-u-1-1 pure-u-md-3-5">
         <div className="pure-u-1-24"></div>
         <div className="pure-u-22-24" hidden={this.props.compound.formula.length == 0}>
           <h2 className="chemicalText pure-u-1-1 hidden" style={{height: '1em'}} dangerouslySetInnerHTML={formulaAsHTML}></h2>

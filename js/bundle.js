@@ -409,6 +409,12 @@ var MolarMassActions = {
     });
   },
 
+  getExample: function () {
+    AppDispatcher.dispatch({
+      actionType: Constants.GET_EXAMPLE
+    });
+  },
+
   update: function (formula) {
     AppDispatcher.dispatch({
       actionType: Constants.UPDATE_FORMULA,
@@ -517,7 +523,7 @@ var ActiveCompoundSection = React.createClass({
 
     return React.createElement(
       'div',
-      { id: 'activeCompoundSection', className: 'pure-u-1-1 pure-u-md-1-2' },
+      { id: 'activeCompoundSection', className: 'pure-u-1-1 pure-u-md-3-5' },
       React.createElement('div', { className: 'pure-u-1-24' }),
       React.createElement(
         'div',
@@ -657,7 +663,7 @@ var HistorySection = React.createClass({
 
     return React.createElement(
       'div',
-      { id: 'historySection', className: 'pure-u-1-1 pure-u-md-1-2' },
+      { id: 'historySection', className: 'pure-u-1-1 pure-u-md-2-5' },
       React.createElement('div', { className: 'pure-u-1-24' }),
       React.createElement(
         'div',
@@ -722,6 +728,11 @@ var InputSection = React.createClass({
     MolarMassActions.update(this.refs.formulaInput.value);
   },
 
+  _autoFillExample: function (event) {
+    MolarMassActions.getExample();
+    event.target.innerText = 'Another one';
+  },
+
   render: function () {
     return React.createElement(
       'div',
@@ -746,7 +757,20 @@ var InputSection = React.createClass({
                 null,
                 ' '
               ),
-              React.createElement('input', { type: 'submit', className: 'pure-button pure-u-1-1 pure-u-sm-2-24', value: '+' })
+              React.createElement('input', { type: 'submit', className: 'pure-button pure-u-1-1 pure-u-sm-2-24', value: '+' }),
+              React.createElement(
+                'div',
+                { className: 'pure-u-1-1 pure-u-sm-22-24', style: { textAlign: 'right' } },
+                React.createElement(
+                  'small',
+                  null,
+                  React.createElement(
+                    'a',
+                    { href: '#', onClick: this._autoFillExample },
+                    'See an example'
+                  )
+                )
+              )
             )
           )
         ),
@@ -838,6 +862,7 @@ module.exports = ResultsSection;
 module.exports = {
   ADD_TO_HISTORY: 'ADD_TO_HISTORY',
   DELETE_HISTORY_ITEM: 'DELETE_HISTORY_ITEM',
+  GET_EXAMPLE: 'GET_EXAMPLE',
   UPDATE_FORMULA: 'UPDATE_FORMULA'
 };
 
@@ -857,6 +882,7 @@ var molarmass = require('molarmass');
 
 var CHANGE_EVENT = 'change';
 var EMPTY_COMPOUND = molarmass('', { returnCompound: true });
+var EXAMPLE_FORMULAS = ['NH4[Cr(SCN)4(NH3)2]', '(CH_3)_2CHOH', 'Na+', 'Cl-', 'CH3(CH2)10C(=O)NH(CH2)3[N+](CH3)(CH3)CH2C([O-])=O', 'C12H22O11', 'H(CO)(CHOH)5H', 'Cr2O7', 'Ca(OH)2', 'Mg3(PO4)2', 'CH3CH2C(=O)OH', 'AlAsO4.(H2O)8'];
 
 var _formulaInput = '';
 var _activeCompound = EMPTY_COMPOUND;
@@ -929,6 +955,11 @@ AppDispatcher.register(function (action) {
       break;
     case Constants.DELETE_HISTORY_ITEM:
       deleteHistoryItem(action.index);
+      MolarMassStore.emitChange();
+      break;
+    case Constants.GET_EXAMPLE:
+      var randomIndex = Math.floor(Math.random() * EXAMPLE_FORMULAS.length);
+      update(EXAMPLE_FORMULAS[randomIndex]);
       MolarMassStore.emitChange();
       break;
     case Constants.UPDATE_FORMULA:

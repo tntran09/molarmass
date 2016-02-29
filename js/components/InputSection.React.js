@@ -11,6 +11,11 @@ var InputSection = React.createClass({
     MolarMassActions.update(this.refs.formulaInput.value);
   },
 
+  _autoFillExample: function (event) {
+    MolarMassActions.getExample();
+    event.target.innerText = 'Another one';
+  },
+
   render: function () {
     return (
       <div id="inputSection" className="pure-g">
@@ -23,6 +28,9 @@ var InputSection = React.createClass({
                   value={this.props.formula} ref="formulaInput" onChange={this._onFormulaChange} />
                 <span> </span>
                 <input type="submit" className="pure-button pure-u-1-1 pure-u-sm-2-24" value="+" />
+                <div className="pure-u-1-1 pure-u-sm-22-24" style={{textAlign: 'right'}}>
+                  <small><a href="#" onClick={this._autoFillExample}>See an example</a></small>
+                </div>
               </fieldset>
             </form>
           </div>
