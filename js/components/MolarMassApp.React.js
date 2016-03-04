@@ -34,7 +34,7 @@ var MolarMassApp = React.createClass({
     return (
       <div id="molarMassApp">
         <HeaderSection />
-        <InputSection formula={this.state.formula} errorMessage={this.state.errorMessage} />
+        <InputSection formula={this.state.formula} errorMessage={this.state.errorMessage} disableAdd={this.state.compound.molarMass == 0} />
         <ResultsSection compound={this.state.compound} history={this.state.history} />
       </div>
     );

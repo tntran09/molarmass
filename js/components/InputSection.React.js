@@ -14,22 +14,33 @@ var InputSection = React.createClass({
   _autoFillExample: function (event) {
     MolarMassActions.getExample();
     event.target.innerText = 'Another one';
+    event.preventDefault();
+  },
+
+  _clear: function (event) {
+    MolarMassActions.update('');
+    event.preventDefault();
   },
 
   render: function () {
     return (
-      <div id="inputSection" className="pure-g">
-        <div className="pure-u-1-24"></div>
-        <div className="pure-u-22-24">
-          <div className="pure-u-1-1 pure-u-sm-4-5">
+      <div id="inputSection">
+          <div className="pure-u-1-1">
             <form className="pure-form" onSubmit={this._onSubmit}>
               <fieldset>
-                <input type="text" name="formulaInput" className="pure-u-1-1 pure-u-sm-20-24" placeholder="Enter a chemical formula..."
-                  value={this.props.formula} ref="formulaInput" onChange={this._onFormulaChange} />
-                <span> </span>
-                <input type="submit" className="pure-button pure-u-1-1 pure-u-sm-2-24" value="+" />
-                <div className="pure-u-1-1 pure-u-sm-22-24" style={{textAlign: 'right'}}>
-                  <small><a href="#" onClick={this._autoFillExample}>See an example</a></small>
+                <div className="pure-u-1-1">
+                  <input type="text" name="formulaInput" className="pure-u-1-1" placeholder="Enter a chemical formula..."
+                    value={this.props.formula} ref="formulaInput" onChange={this._onFormulaChange} />
+                </div>
+
+                <div className="pure-u-1-1" style={{height: '.5em'}}></div>
+                
+                <div className="buttonRow pure-u-1-1" style={{fontSize: '80%'}}>
+                  <button className="pure-button pure-u-7-24" onClick={this._clear}>Clear</button>
+                  <div className="pure-u-1-24"></div>
+                  <button className="pure-button pure-u-8-24" onClick={this._autoFillExample}>See an Example</button>
+                  <div className="pure-u-1-24"></div>
+                  <button className="pure-button pure-u-7-24" onClick={this._onSubmit} disabled={this.props.disableAdd}>Add to History</button>
                 </div>
               </fieldset>
             </form>
@@ -38,7 +49,7 @@ var InputSection = React.createClass({
           <div className="pure-u-1-1">
             <p className="formulaError" style={{color: 'red', height: '1em'}}>{this.props.errorMessage}</p>
           </div>
-        </div>
+
       </div>
     );
   }

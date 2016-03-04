@@ -523,54 +523,49 @@ var ActiveCompoundSection = React.createClass({
 
     return React.createElement(
       'div',
-      { id: 'activeCompoundSection', className: 'pure-u-1-1 pure-u-md-3-5' },
-      React.createElement('div', { className: 'pure-u-1-24' }),
+      { id: 'activeCompoundSection', className: 'pure-u-1-1', hidden: this.props.compound.formula.length == 0 },
+      React.createElement('h2', { className: 'chemicalText pure-u-1-1 hidden', style: { height: '1em' }, dangerouslySetInnerHTML: formulaAsHTML }),
       React.createElement(
-        'div',
-        { className: 'pure-u-22-24', hidden: this.props.compound.formula.length == 0 },
-        React.createElement('h2', { className: 'chemicalText pure-u-1-1 hidden', style: { height: '1em' }, dangerouslySetInnerHTML: formulaAsHTML }),
+        'p',
+        { className: 'pure-u-1-1 hidden' },
+        'Molar Mass: ',
+        this.props.compound.molarMass
+      ),
+      React.createElement(
+        'table',
+        { className: 'pure-table' },
         React.createElement(
-          'p',
-          { className: 'pure-u-1-1 hidden' },
-          'Molar Mass: ',
-          this.props.compound.molarMass
-        ),
-        React.createElement(
-          'table',
-          { className: 'pure-table' },
+          'thead',
+          null,
           React.createElement(
-            'thead',
+            'tr',
             null,
             React.createElement(
-              'tr',
+              'th',
               null,
-              React.createElement(
-                'th',
-                null,
-                'Element'
-              ),
-              React.createElement(
-                'th',
-                null,
-                'Molar Mass'
-              ),
-              React.createElement(
-                'th',
-                null,
-                'Quantity'
-              ),
-              React.createElement(
-                'th',
-                null,
-                'Total Mass'
-              )
+              'Element'
+            ),
+            React.createElement(
+              'th',
+              null,
+              'Molar Mass'
+            ),
+            React.createElement(
+              'th',
+              null,
+              'Quantity'
+            ),
+            React.createElement(
+              'th',
+              null,
+              'Total Mass'
             )
-          ),
-          React.createElement(
-            'tbody',
-            null,
-            tbody
           )
+        ),
+        React.createElement(
+          'tbody',
+          null,
+          tbody
         )
       )
     );
@@ -589,14 +584,18 @@ var HeaderSection = React.createClass({
     return React.createElement(
       "div",
       { id: "headerSection", className: "pure-g" },
-      React.createElement("div", { className: "pure-u-1-12" }),
       React.createElement(
         "div",
-        { className: "pure-u-11-12" },
+        { className: "pure-u-1-1" },
         React.createElement(
           "h2",
           null,
           "Molar Mass"
+        ),
+        React.createElement(
+          "h6",
+          null,
+          "Calculate molar mass of a compound from its chemical formula"
         )
       )
     );
@@ -663,47 +662,42 @@ var HistorySection = React.createClass({
 
     return React.createElement(
       'div',
-      { id: 'historySection', className: 'pure-u-1-1 pure-u-md-2-5' },
-      React.createElement('div', { className: 'pure-u-1-24' }),
+      { id: 'historySection', className: 'pure-u-1-1' },
       React.createElement(
-        'div',
-        { className: 'pure-u-22-24' },
+        'h4',
+        null,
+        'History'
+      ),
+      React.createElement(
+        'table',
+        { className: 'pure-table' },
         React.createElement(
-          'h4',
+          'thead',
           null,
-          'History'
-        ),
-        React.createElement(
-          'table',
-          { className: 'pure-table' },
           React.createElement(
-            'thead',
+            'tr',
             null,
             React.createElement(
-              'tr',
+              'th',
               null,
-              React.createElement(
-                'th',
-                null,
-                'Formula'
-              ),
-              React.createElement(
-                'th',
-                null,
-                'Mass (g/mol)'
-              ),
-              React.createElement(
-                'th',
-                null,
-                React.createElement('i', { className: 'fa fa-trash' })
-              )
+              'Formula'
+            ),
+            React.createElement(
+              'th',
+              null,
+              'Mass (g/mol)'
+            ),
+            React.createElement(
+              'th',
+              null,
+              React.createElement('i', { className: 'fa fa-trash' })
             )
-          ),
-          React.createElement(
-            'tbody',
-            null,
-            tbody
           )
+        ),
+        React.createElement(
+          'tbody',
+          null,
+          tbody
         )
       )
     );
@@ -731,57 +725,65 @@ var InputSection = React.createClass({
   _autoFillExample: function (event) {
     MolarMassActions.getExample();
     event.target.innerText = 'Another one';
+    event.preventDefault();
+  },
+
+  _clear: function (event) {
+    MolarMassActions.update('');
+    event.preventDefault();
   },
 
   render: function () {
     return React.createElement(
       'div',
-      { id: 'inputSection', className: 'pure-g' },
-      React.createElement('div', { className: 'pure-u-1-24' }),
+      { id: 'inputSection' },
       React.createElement(
         'div',
-        { className: 'pure-u-22-24' },
+        { className: 'pure-u-1-1' },
         React.createElement(
-          'div',
-          { className: 'pure-u-1-1 pure-u-sm-4-5' },
+          'form',
+          { className: 'pure-form', onSubmit: this._onSubmit },
           React.createElement(
-            'form',
-            { className: 'pure-form', onSubmit: this._onSubmit },
+            'fieldset',
+            null,
             React.createElement(
-              'fieldset',
-              null,
-              React.createElement('input', { type: 'text', name: 'formulaInput', className: 'pure-u-1-1 pure-u-sm-20-24', placeholder: 'Enter a chemical formula...',
-                value: this.props.formula, ref: 'formulaInput', onChange: this._onFormulaChange }),
+              'div',
+              { className: 'pure-u-1-1' },
+              React.createElement('input', { type: 'text', name: 'formulaInput', className: 'pure-u-1-1', placeholder: 'Enter a chemical formula...',
+                value: this.props.formula, ref: 'formulaInput', onChange: this._onFormulaChange })
+            ),
+            React.createElement('div', { className: 'pure-u-1-1', style: { height: '.5em' } }),
+            React.createElement(
+              'div',
+              { className: 'buttonRow pure-u-1-1', style: { fontSize: '80%' } },
               React.createElement(
-                'span',
-                null,
-                ' '
+                'button',
+                { className: 'pure-button pure-u-7-24', onClick: this._clear },
+                'Clear'
               ),
-              React.createElement('input', { type: 'submit', className: 'pure-button pure-u-1-1 pure-u-sm-2-24', value: '+' }),
+              React.createElement('div', { className: 'pure-u-1-24' }),
               React.createElement(
-                'div',
-                { className: 'pure-u-1-1 pure-u-sm-22-24', style: { textAlign: 'right' } },
-                React.createElement(
-                  'small',
-                  null,
-                  React.createElement(
-                    'a',
-                    { href: '#', onClick: this._autoFillExample },
-                    'See an example'
-                  )
-                )
+                'button',
+                { className: 'pure-button pure-u-8-24', onClick: this._autoFillExample },
+                'See an Example'
+              ),
+              React.createElement('div', { className: 'pure-u-1-24' }),
+              React.createElement(
+                'button',
+                { className: 'pure-button pure-u-7-24', onClick: this._onSubmit, disabled: this.props.disableAdd },
+                'Add to History'
               )
             )
           )
-        ),
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'pure-u-1-1' },
         React.createElement(
-          'div',
-          { className: 'pure-u-1-1' },
-          React.createElement(
-            'p',
-            { className: 'formulaError', style: { color: 'red', height: '1em' } },
-            this.props.errorMessage
-          )
+          'p',
+          { className: 'formulaError', style: { color: 'red', height: '1em' } },
+          this.props.errorMessage
         )
       )
     );
@@ -830,7 +832,7 @@ var MolarMassApp = React.createClass({
       'div',
       { id: 'molarMassApp' },
       React.createElement(HeaderSection, null),
-      React.createElement(InputSection, { formula: this.state.formula, errorMessage: this.state.errorMessage }),
+      React.createElement(InputSection, { formula: this.state.formula, errorMessage: this.state.errorMessage, disableAdd: this.state.compound.molarMass == 0 }),
       React.createElement(ResultsSection, { compound: this.state.compound, history: this.state.history })
     );
   }
@@ -849,7 +851,7 @@ var ResultsSection = React.createClass({
   render: function () {
     return React.createElement(
       'div',
-      { id: 'resultsSection', className: 'pure-g' },
+      { id: 'resultsSection' },
       React.createElement(ActiveCompoundSection, { compound: this.props.compound }),
       React.createElement(HistorySection, { history: this.props.history })
     );

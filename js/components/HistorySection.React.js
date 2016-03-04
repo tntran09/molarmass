@@ -38,9 +38,7 @@ var HistorySection = React.createClass({
     var tbody = this._buildTableBody(this.props.history);
 
     return (
-      <div id="historySection" className="pure-u-1-1 pure-u-md-2-5">
-        <div className="pure-u-1-24"></div>
-        <div className="pure-u-22-24">
+      <div id="historySection" className="pure-u-1-1">
         <h4>History</h4>
           <table className="pure-table">
             <thead>
@@ -54,7 +52,6 @@ var HistorySection = React.createClass({
               {tbody}
             </tbody>
           </table>
-        </div>
       </div>
     );
   }
