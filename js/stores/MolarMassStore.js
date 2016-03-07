@@ -33,8 +33,6 @@ function addToHistory () {
       mass: _activeCompound.molarMass
     });
 
-    _formulaInput = '';
-    _activeCompound = EMPTY_COMPOUND;
     _errorMessage = '';
   }
 }

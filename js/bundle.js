@@ -758,21 +758,17 @@ var InputSection = React.createClass({
               { className: 'buttonRow pure-u-1-1', style: { fontSize: '80%' } },
               React.createElement(
                 'button',
-                { className: 'pure-button pure-u-7-24', onClick: this._clear },
+                { className: 'pure-button pure-u-1-1 pure-u-sm-7-24', onClick: this._clear },
                 'Clear'
               ),
               React.createElement('div', { className: 'pure-u-1-24' }),
               React.createElement(
                 'button',
-                { className: 'pure-button pure-u-8-24', onClick: this._autoFillExample },
+                { className: 'pure-button pure-u-1-1 pure-u-sm-8-24', onClick: this._autoFillExample },
                 'See an Example'
               ),
               React.createElement('div', { className: 'pure-u-1-24' }),
-              React.createElement(
-                'button',
-                { className: 'pure-button pure-u-7-24', onClick: this._onSubmit, disabled: this.props.disableAdd },
-                'Add to History'
-              )
+              React.createElement('input', { type: 'submit', className: 'pure-button pure-u-1-1 pure-u-sm-7-24', onClick: this._onSubmit, disabled: this.props.disableAdd, value: 'Save' })
             )
           )
         )
@@ -898,8 +894,6 @@ function addToHistory() {
       mass: _activeCompound.molarMass
     });
 
-    _formulaInput = '';
-    _activeCompound = EMPTY_COMPOUND;
     _errorMessage = '';
   }
 }
