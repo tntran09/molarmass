@@ -662,11 +662,11 @@ var HistorySection = React.createClass({
 
     return React.createElement(
       'div',
-      { id: 'historySection', className: 'pure-u-1-1' },
+      { id: 'historySection', className: 'pure-u-1-1', hidden: this.props.history.length == 0 },
       React.createElement(
         'h4',
         null,
-        'History'
+        'Saved Formulas'
       ),
       React.createElement(
         'table',
@@ -887,6 +887,10 @@ var _errorMessage = '';
 
 function addToHistory() {
   if (_activeCompound.molarMass > 0) {
+    if (_compoundHistory.length > 0 && _compoundHistory[_compoundHistory.length - 1].formula == _activeCompound.formula) {
+      return;
+    }
+
     _compoundHistory.push({
       formula: _activeCompound.formula,
       mass: _activeCompound.molarMass

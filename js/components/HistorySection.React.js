@@ -38,8 +38,8 @@ var HistorySection = React.createClass({
     var tbody = this._buildTableBody(this.props.history);
 
     return (
-      <div id="historySection" className="pure-u-1-1">
-        <h4>History</h4>
+      <div id="historySection" className="pure-u-1-1" hidden={this.props.history.length == 0}>
+        <h4>Saved Formulas</h4>
           <table className="pure-table">
             <thead>
               <tr>
