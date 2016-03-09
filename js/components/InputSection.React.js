@@ -35,9 +35,8 @@ var InputSection = React.createClass({
 
                 <div className="buttonRow pure-u-1-1" style={{fontSize: '80%'}}>
                   <button type="button" className="pure-button pure-u-1-1 pure-u-sm-7-24" onClick={this._clear}>Clear</button>
-                  <div className="pure-u-1-24"></div>
-                  <button type="button" className="pure-button pure-u-1-1 pure-u-sm-8-24" onClick={this._autoFillExample}>See an Example</button>
-                  <div className="pure-u-1-24"></div>
+                  <div className="pure-u-10-24"></div>
+                  
                   <input type="submit" className="pure-button pure-u-1-1 pure-u-sm-7-24" disabled={this.props.disableAdd} value="Save" />
                 </div>
               </fieldset>
