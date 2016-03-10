@@ -8,7 +8,7 @@ var ResultsSection = React.createClass({
     return (
       <div id="resultsSection">
         <ActiveCompoundSection compound={this.props.compound} />
-        <ExampleSection hideSection={this.props.compound.formula.length > 0}/>
+        <ExampleSection hideSection={this.props.compound.formula.length > 0 || this.props.history.length > 0}/>
         <HistorySection history={this.props.history} />
       </div>
     );

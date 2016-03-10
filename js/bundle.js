@@ -675,7 +675,7 @@ var HeaderSection = React.createClass({
           "Molar Mass"
         ),
         React.createElement(
-          "h6",
+          "h5",
           null,
           "Calculate molar mass of a compound from its chemical formula"
         )
@@ -833,7 +833,7 @@ var InputSection = React.createClass({
               { className: 'buttonRow pure-u-1-1', style: { fontSize: '80%' } },
               React.createElement(
                 'button',
-                { type: 'button', className: 'pure-button pure-u-1-1 pure-u-sm-7-24', onClick: this._clear },
+                { type: 'button', className: 'pure-button pure-u-1-1 pure-u-sm-7-24', onClick: this._clear, disabled: this.props.formula == '' },
                 'Clear'
               ),
               React.createElement('div', { className: 'pure-u-10-24' }),
@@ -919,7 +919,7 @@ var ResultsSection = React.createClass({
       'div',
       { id: 'resultsSection' },
       React.createElement(ActiveCompoundSection, { compound: this.props.compound }),
-      React.createElement(ExampleSection, { hideSection: this.props.compound.formula.length > 0 }),
+      React.createElement(ExampleSection, { hideSection: this.props.compound.formula.length > 0 || this.props.history.length > 0 }),
       React.createElement(HistorySection, { history: this.props.history })
     );
   }
