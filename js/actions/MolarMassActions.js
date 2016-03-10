@@ -15,12 +15,6 @@ var MolarMassActions = {
     });
   },
 
-  getExample: function () {
-    AppDispatcher.dispatch({
-      actionType: Constants.GET_EXAMPLE
-    })
-  },
-
   update: function (formula) {
     AppDispatcher.dispatch({
       actionType: Constants.UPDATE_FORMULA,

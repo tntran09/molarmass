@@ -22,11 +22,15 @@ var ExampleSection = React.createClass({
   },
 
   componentWillReceiveProps: function (nextProps) {
-    if (!nextProps.hideSection) {
+    if (this.props.hideSection && !nextProps.hideSection) {
       var a = this.state.examples;
-      a.sort(function(a, b) { return Math.random() - Math.random(); });
+      var b = [];
+      while(a.length > 0) {
+        b.push(a.splice(Math.floor(Math.random() * a.length), 1));
+      }
+      
       this.setState({
-        examples: a
+        examples: b
       });
     }
   },
