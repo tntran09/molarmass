@@ -24,7 +24,7 @@ The chemical formula (case-sensitive)
 
 ###### Validity Matrix
 |   | S | U | L | N | O | C | E |
-| - | - | - | - | - | - | - | - |
+| --- | --- | --- | --- | --- | --- | --- | --- |
 | S |   | x |   |   | x |   |   |
 | U |   | x | x | x | x | x | x |
 | L |   | x | x | x | x | x | x |
