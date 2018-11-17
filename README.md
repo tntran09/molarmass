@@ -2,7 +2,7 @@
 
 Test molarmass in your browser at
 
-http://tntran09.github.io/molarmass
+https://tntran09.github.io/molarmass
 
 https://tonicdev.com/npm/molarmass
 
